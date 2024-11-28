@@ -11,4 +11,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // proxy: {
+  //   "/paypal": "http://127.0.0.1:3000"
+  // }
 });

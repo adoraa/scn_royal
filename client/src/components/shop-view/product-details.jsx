@@ -1,4 +1,4 @@
-import { StarIcon } from "lucide-react";
+// import { StarIcon } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
@@ -6,7 +6,7 @@ import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { setProductDetails } from "@/store/shop/products-slice";
 import { Label } from "../ui/label";
 import StarRatingComponent from "../common/star-rating";
@@ -76,7 +76,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       addReview({
         productId: productDetails?._id,
         userId: user?.id,
-        userName: user?.userName,
+        username: user?.username,
         reviewMessage: reviewMsg,
         reviewValue: rating,
       })
@@ -173,12 +173,12 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                   <div className="flex gap-4">
                     <Avatar className="w-10 h-10 border">
                       <AvatarFallback>
-                        {reviewItem?.userName[0].toUpperCase()}
+                        {reviewItem?.username[0].toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid gap-1">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-bold">{reviewItem?.userName}</h3>
+                        <h3 className="font-bold">{reviewItem?.username}</h3>
                       </div>
                       <div className="flex items-center gap-0.5">
                         <StarRatingComponent rating={reviewItem?.reviewValue} />
