@@ -1,4 +1,4 @@
-import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+import { HousePlug, UserPlus, LogIn, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
 import {
   Link,
   useLocation,
@@ -112,22 +112,39 @@ function HeaderRightContent() {
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
             <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.username[0].toUpperCase()}
+              {user ? user.username[0].toUpperCase() : "G"}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" className="w-56">
-          <DropdownMenuLabel>Logged in as {user?.username}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => navigate("/shop/account")}>
-            <UserCog className="mr-2 h-4 w-4" />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
+          {user ? (
+            <>
+              <DropdownMenuLabel>Logged in a {user.username}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate("/shop/account")}>
+                <UserCog className="mr-2 h-4 w-4" />
+                Account
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuLabel>Guest</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigate("/auth/login")}>
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/auth/register")}>
+                <UserPlus className="mr-2 h-4 w-4" />
+                Register
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -136,7 +153,6 @@ function HeaderRightContent() {
 
 function ShoppingHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
-  
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">

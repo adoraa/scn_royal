@@ -3,20 +3,15 @@ import bannerOne from "../../assets/banner-1.webp";
 import bannerTwo from "../../assets/banner-2.webp";
 import bannerThree from "../../assets/banner-3.webp";
 import {
-  Airplay,
   BabyIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  CloudLightning,
-  Heater,
-  Images,
-  Shirt,
-  ShirtIcon,
-  ShoppingBasket,
-  UmbrellaIcon,
-  WashingMachine,
+  Footprints,
   WatchIcon,
+  Laptop,
 } from "lucide-react";
+import { SiNike, SiAdidas, SiPuma, SiDior, SiZara, SiHandm } from "react-icons/si";
+import { IoMan, IoWoman } from "react-icons/io5";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,23 +27,25 @@ import ProductDetailsDialog from "@/components/shop-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 
 const categoriesWithIcon = [
-  { id: "men", label: "Men", icon: ShirtIcon },
-  { id: "women", label: "Women", icon: CloudLightning },
+  { id: "men", label: "Men", icon: IoMan },
+  { id: "women", label: "Women", icon: IoWoman },
   { id: "kids", label: "Kids", icon: BabyIcon },
   { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
+  { id: "footwear", label: "Footwear", icon: Footprints },
+  // { id: "footwear", label: "Gadgets", icon: Laptop },
 ];
 
 const brandsWithIcon = [
-  { id: "nike", label: "Nike", icon: Shirt },
-  { id: "adidas", label: "Adidas", icon: WashingMachine },
-  { id: "puma", label: "Puma", icon: ShoppingBasket },
-  { id: "levi", label: "Levi's", icon: Airplay },
-  { id: "zara", label: "Zara", icon: Images },
-  { id: "h&m", label: "H&M", icon: Heater },
+  { id: "nike", label: "Nike", icon: SiNike },
+  { id: "adidas", label: "Adidas", icon: SiAdidas },
+  { id: "puma", label: "Puma", icon: SiPuma },
+  { id: "levi", label: "Dior", icon: SiDior},
+  { id: "zara", label: "Zara", icon: SiZara },
+  { id: "h&m", label: "H&M", icon: SiHandm },
 ];
 
 function ShoppingHome() {
+  const slides = [bannerOne, bannerTwo, bannerThree]
   const [currentSlide, setCurrentSlide] = useState(0);
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts

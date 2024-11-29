@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
@@ -40,7 +40,10 @@ function App() {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-        <Route
+        <Route path="/" element={<ShoppingLayout/>} > 
+          <Route path="/" element={<ShoppingHome />} />
+        </Route>
+        {/* <Route
           path="/"
           element={
             <CheckAuth
@@ -48,7 +51,7 @@ function App() {
               user={user}
             ></CheckAuth>
           }
-        />
+        /> */}
         <Route
           path="/auth"
           element={
@@ -60,6 +63,36 @@ function App() {
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
         </Route>
+
+        {/* Unauthenticated users can access store routes */}
+        <Route path="/shop" element={<ShoppingLayout />}>
+          <Route path="home" element={<ShoppingHome />} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="account" element={<ShoppingAccount />} />
+          {/* Cart accessible without authentication */}
+          <Route
+            path="checkout"
+            element={
+              isAuthenticated ? (
+                <ShoppingCheckout />
+              ) : (
+                <Navigate to="/auth/login" />
+              )
+            }
+          />
+          <Route
+            path="payment-success"
+            element={
+              isAuthenticated ? (
+                <PaymentSuccessPage />
+              ) : (
+                <Navigate to="/auth/login" />
+              )
+            }
+          />
+          <Route path="search" element={<SearchProducts />} />
+        </Route>
+
         <Route
           path="/admin"
           element={
@@ -76,9 +109,9 @@ function App() {
         <Route
           path="/shop"
           element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            // <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <ShoppingLayout />
-            </CheckAuth>
+            // </CheckAuth>
           }
         >
           <Route path="home" element={<ShoppingHome />} />
