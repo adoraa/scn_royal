@@ -1,8 +1,9 @@
 import {
   BadgeCheck,
   ChartSpline,
-  LayoutDashboard,
   ShoppingBasket,
+  LayoutGrid,
+  ChartNoAxesColumn,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +14,19 @@ const adminSidebarMenuItems = [
     id: "dashboard",
     label: "Dashboard",
     path: "/admin/dashboard",
-    icon: <LayoutDashboard />,
+    icon: <ChartNoAxesColumn />,
   },
   {
     id: "products",
     label: "Products",
     path: "/admin/products",
     icon: <ShoppingBasket />,
+  },
+  {
+    id: "categories",
+    label: "Categories",
+    path: "/admin/categories",
+    icon: <LayoutGrid />,
   },
   {
     id: "orders",
