@@ -94,6 +94,7 @@ const logoutUser = (req, res) => {
     success: true,
     message: "Logged out successfully!",
   });
+  res.redirect("/shop/home");
 };
 
 //auth middleware
