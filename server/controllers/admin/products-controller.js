@@ -1,5 +1,6 @@
 const { imageUploadUtil } = require("../../helpers/cloudinary");
 const Product = require("../../models/Product");
+const cloudinary = require("cloudinary").v2;
 
 const handleImageUpload = async (req, res) => {
   try {
@@ -134,11 +135,28 @@ const deleteProduct = async (req, res) => {
     const { id } = req.params;
     const product = await Product.findByIdAndDelete(id);
 
-    if (!product)
+    if (!product) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
+    }
+
+    // Extract the public ID from the image URL
+    const imageUrl = product.image;
+    // Get the public ID without the file extension
+    const publicId = imageUrl.split("/").pop().split(".")[0];
+
+    // Delete the image from Cloudinary
+    await cloudinary.uploader.destroy(publicId, (error, result) => {
+      if (error) {
+        console.log("Cloudinary image deletion error:", error);
+        return res.status(500).json({
+          success: false,
+          message: "Error occurred while deleting image",
+        });
+      }
+    });
 
     res.status(200).json({
       success: true,
