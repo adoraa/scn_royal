@@ -18,7 +18,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
     });
 
     const result = await axios.get(
-      `https://scn-v1-server.vercel.app/api/shop/products/get?${query}`
+      `https://scn-royal-server.vercel.app/api/shop/products/get?${query}`
     );
 
     console.log(result);
@@ -31,7 +31,7 @@ export const fetchProductDetails = createAsyncThunk(
   "/products/fetchProductDetails",
   async (id) => {
     const result = await axios.get(
-      `https://scn-v1-server.vercel.app/api/shop/products/get/${id}`
+      `https://scn-royal-server.vercel.app/api/shop/products/get/${id}`
     );
 
     return result?.data;

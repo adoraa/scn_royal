@@ -10,7 +10,7 @@ export const getFeatureImages = createAsyncThunk(
   "/order/getFeatureImages",
   async () => {
     const response = await axios.get(
-      `https://scn-v1-server.vercel.app/api/common/feature/get`
+      `https://scn-royal-server.vercel.app/api/common/feature/get`
     );
 
     return response.data;
@@ -21,7 +21,7 @@ export const addFeatureImage = createAsyncThunk(
   "/order/addFeatureImage",
   async (image) => {
     const response = await axios.post(
-      `https://scn-v1-server.vercel.app/api/common/feature/add`,
+      `https://scn-royal-server.vercel.app/api/common/feature/add`,
       { image }
     );
 
