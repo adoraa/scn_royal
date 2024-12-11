@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import bannerOne from "../../assets/banner-1.webp";
-import bannerTwo from "../../assets/banner-2.webp";
-import bannerThree from "../../assets/banner-3.webp";
+// import bannerOne from "../../assets/banner-1.webp";
+// import bannerTwo from "../../assets/banner-2.webp";
+// import bannerThree from "../../assets/banner-3.webp";
 import {
   BabyIcon,
   ChevronLeftIcon,
@@ -45,7 +45,7 @@ const brandsWithIcon = [
 ];
 
 function ShoppingHome() {
-  const slides = [bannerOne, bannerTwo, bannerThree]
+  // const slides = [bannerOne, bannerTwo, bannerThree]
   const [currentSlide, setCurrentSlide] = useState(0);
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts

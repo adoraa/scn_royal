@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orbitron:wght@400..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -23,9 +25,13 @@
 
     --primary-foreground: 210 40% 98%;
 
-    --primary2: 210 100% 40%;
+    --primaryGreen: 90 46% 56%;
   
-    --primary-foreground2: 210 100% 95%;
+    --primaryGreen-foreground: 210 100% 95%;
+
+    --primaryBlue: 204 76% 42%;
+
+    --primaryBlue-foreground: 204 76% 95%;
 
     --secondary: 210 40% 96.1%;
 

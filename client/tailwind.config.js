@@ -53,6 +53,10 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      fontFamily: {
+        primary: ['Orbitron', 'sans-serif'],
+        secondary: ['Open Sans', 'sans-serif']
+      }
     },
   },
   plugins: [tailwindcssAnimate],
