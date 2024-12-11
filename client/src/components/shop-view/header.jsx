@@ -66,7 +66,7 @@ function MenuItems() {
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
-  console.log(user, "useruseruser");
+  // console.log(user, "useruseruser");
   // const { cartItems } = useSelector((state) => state.shopCart);
   // const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
