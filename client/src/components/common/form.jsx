@@ -22,11 +22,6 @@ function CommonForm({
     let element = null;
     const value = formData[getControlItem.name] || "";
 
-    // const initialState = {
-    //   email: "",
-    //   password: "",
-    // };
-
     switch (getControlItem.componentType) {
       case "input":
         element = (
@@ -37,7 +32,6 @@ function CommonForm({
             type={getControlItem.type}
             value={value}
             onChange={(event) => {
-              console.log(event.target.value);
               setFormData({
                 ...formData,
                 [getControlItem.name]: event.target.value,

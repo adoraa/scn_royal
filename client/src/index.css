@@ -7,6 +7,10 @@
 /* ... */
 
 @layer base {
+  * {
+      @apply font-secondary;
+  }
+
   :root {
 
     --background: 0 0% 100%;
