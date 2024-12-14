@@ -1,4 +1,11 @@
-import { UserPlus, LogIn, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
+import {
+  UserPlus,
+  LogIn,
+  LogOut,
+  Menu,
+  ShoppingCart,
+  UserCog,
+} from "lucide-react";
 import {
   Link,
   useLocation,
@@ -73,7 +80,9 @@ function HeaderRightContent() {
   const dispatch = useDispatch();
 
   function handleLogout() {
-    dispatch(logoutUser());
+    dispatch(logoutUser()).then(() => {
+      navigate("/");
+    });
   }
 
   // useEffect(() => {
