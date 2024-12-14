@@ -111,7 +111,7 @@ function HeaderRightContent() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
-            <AvatarFallback className="bg-black text-white font-extrabold">
+            <AvatarFallback className="bg-black text-white font-extrabold cursor-pointer">
               {user ? user.username[0].toUpperCase() : "G"}
             </AvatarFallback>
           </Avatar>
