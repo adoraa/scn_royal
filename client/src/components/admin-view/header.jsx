@@ -10,7 +10,7 @@ function AdminHeader({ setOpen }) {
 
   function handleLogout() {
     dispatch(logoutUser()).then(() => {
-      navigate("/");
+      navigate("/shop/home");
     });
   }
 

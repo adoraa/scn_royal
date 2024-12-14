@@ -81,7 +81,7 @@ function HeaderRightContent() {
 
   function handleLogout() {
     dispatch(logoutUser()).then(() => {
-      navigate("/");
+      navigate("/shop/home");
     });
   }
 
