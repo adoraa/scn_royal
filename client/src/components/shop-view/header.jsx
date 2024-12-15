@@ -74,8 +74,8 @@ function MenuItems() {
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
   // console.log(user, "useruseruser");
-  // const { cartItems } = useSelector((state) => state.shopCart);
-  // const [openCartSheet, setOpenCartSheet] = useState(false);
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -85,36 +85,36 @@ function HeaderRightContent() {
     });
   }
 
-  // useEffect(() => {
-  //   dispatch(fetchCartItems(user?.id));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCartItems(user?.id));
+  }, [dispatch]);
 
   // console.log(cartItems, "scn_royal");
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
-      {/* <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}> */}
-      <Sheet>
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
+      {/* <Sheet> */}
         <Button
-          // onClick={() => setOpenCartSheet(true)}
+          onClick={() => setOpenCartSheet(true)}
           variant="outline"
           size="icon"
           className="relative"
         >
           <ShoppingCart className="w-6 h-6" />
           <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
-            {/* {cartItems?.items?.length || 0} */}
+            {cartItems?.items?.length || 0}
           </span>
           <span className="sr-only">User cart</span>
         </Button>
-        {/* <UserCartWrapper
+        <UserCartWrapper
           setOpenCartSheet={setOpenCartSheet}
           cartItems={
             cartItems && cartItems.items && cartItems.items.length > 0
               ? cartItems.items
               : []
           }
-        /> */}
+        />
       </Sheet>
 
       <DropdownMenu>
