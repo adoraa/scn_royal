@@ -61,8 +61,7 @@ export const addProductFormElements = [
       { id: "men", label: "Men" },
       { id: "women", label: "Women" },
       { id: "kids", label: "Kids" },
-      { id: "accessories", label: "Accessories" },
-      { id: "footwear", label: "Footwear" },
+      { id: "neutral", label: "Neutral" },
     ],
   },
   {
@@ -70,12 +69,12 @@ export const addProductFormElements = [
     name: "brand",
     componentType: "select",
     options: [
-      { id: "nike", label: "Nike" },
-      { id: "adidas", label: "Adidas" },
-      { id: "puma", label: "Puma" },
-      { id: "levi", label: "Levi's" },
-      { id: "zara", label: "Zara" },
-      { id: "h&m", label: "H&M" },
+      { id: "accessories", label: "Accessories" },
+      { id: "clothes", label: "Clothes" },
+      { id: "electronics", label: "Electronics" },
+      { id: "travel_luggage", label: "Luggages" },
+      { id: "perfume", label: "Perfumes" },
+      { id: "cooking_utensils", label: "Utensils" },
     ],
   },
   {
@@ -128,13 +127,8 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/listing",
   },
   {
-    id: "footwear",
-    label: "Footwear",
-    path: "/shop/listing",
-  },
-  {
-    id: "accessories",
-    label: "Accessories",
+    id: "neutral",
+    label: "Neutral",
     path: "/shop/listing",
   },
   {
@@ -148,17 +142,16 @@ export const categoryOptionsMap = {
   men: "Men",
   women: "Women",
   kids: "Kids",
-  accessories: "Accessories",
-  footwear: "Footwear",
+  accessories: "Neutral",
 };
 
 export const brandOptionsMap = {
-  nike: "Nike",
-  adidas: "Adidas",
-  puma: "Puma",
-  levi: "Levi",
-  zara: "Zara",
-  "h&m": "H&M",
+  accessories: "Accessories",
+  clothes: "Clothes",
+  electronics: "Electronics",
+  travel_luggage: "Luggages",
+  perfume: "Perfumes",
+  cooking_utensils: "Utensils",
 };
 
 export const filterOptions = {
@@ -166,16 +159,15 @@ export const filterOptions = {
     { id: "men", label: "Men" },
     { id: "women", label: "Women" },
     { id: "kids", label: "Kids" },
-    { id: "accessories", label: "Accessories" },
-    { id: "footwear", label: "Footwear" },
+    { id: "neutral", label: "Neutral" },
   ],
   brand: [
-    { id: "nike", label: "Nike" },
-    { id: "adidas", label: "Adidas" },
-    { id: "puma", label: "Puma" },
-    { id: "levi", label: "Levi's" },
-    { id: "zara", label: "Zara" },
-    { id: "h&m", label: "H&M" },
+    { id: "accessories", label: "Accessories" },
+    { id: "clothes", label: "Clothes" },
+    { id: "electronics", label: "Electronics" },
+    { id: "travel_luggage", label: "Luggages" },
+    { id: "perfume", label: "Perfumes" },
+    { id: "cooking_utensils", label: "Utensils" },
   ],
 };
 
