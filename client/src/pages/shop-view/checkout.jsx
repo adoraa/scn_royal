@@ -1,5 +1,5 @@
 import Address from "@/components/shop-view/address";
-import img from "../../assets/account.jpg";
+import img from "../../assets/account.webp";
 import { useDispatch, useSelector } from "react-redux";
 import UserCartItemsContent from "@/components/shop-view/cart-items-content";
 import { Button } from "@/components/ui/button";

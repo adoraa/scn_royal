@@ -144,11 +144,21 @@ function HeaderRightContent() {
             <>
               <DropdownMenuLabel>Guest</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/auth/login")}>
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate("/auth/login");
+                  window.location.reload();
+                }}
+              >
                 <LogIn className="mr-2 h-4 w-4" />
                 Login
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/auth/register")}>
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate("/auth/register");
+                  window.location.reload();
+                }}
+              >
                 <UserPlus className="mr-2 h-4 w-4" />
                 Register
               </DropdownMenuItem>
