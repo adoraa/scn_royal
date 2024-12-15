@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
-// import bannerOne from "../../assets/banner-1.webp";
-// import bannerTwo from "../../assets/banner-2.webp";
-// import bannerThree from "../../assets/banner-3.webp";
 import {
   BabyIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  Footprints,
-  WatchIcon,
   Laptop,
+  Shirt,
+  SprayCan,
+  CookingPot,
+  Gem,
+  Luggage,
 } from "lucide-react";
-import { SiNike, SiAdidas, SiPuma, SiDior, SiZara, SiHandm } from "react-icons/si";
+import { FaNeuter } from "react-icons/fa6";
 import { IoMan, IoWoman } from "react-icons/io5";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
@@ -30,22 +30,19 @@ const categoriesWithIcon = [
   { id: "men", label: "Men", icon: IoMan },
   { id: "women", label: "Women", icon: IoWoman },
   { id: "kids", label: "Kids", icon: BabyIcon },
-  { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: Footprints },
-  // { id: "footwear", label: "Gadgets", icon: Laptop },
+  { id: "neutral", label: "Neutral", icon: FaNeuter },
 ];
 
 const brandsWithIcon = [
-  { id: "nike", label: "Nike", icon: SiNike },
-  { id: "adidas", label: "Adidas", icon: SiAdidas },
-  { id: "puma", label: "Puma", icon: SiPuma },
-  { id: "levi", label: "Dior", icon: SiDior},
-  { id: "zara", label: "Zara", icon: SiZara },
-  { id: "h&m", label: "H&M", icon: SiHandm },
+  { id: "accessories", label: "Accessories", icon: Gem },
+  { id: "clothes", label: "Clothes", icon: Shirt },
+  { id: "electronics", label: "Electronics", icon: Laptop },
+  { id: "travel_luggage", label: "Luggages", icon: Luggage },
+  { id: "perfume", label: "Perfumes", icon: SprayCan },
+  { id: "cooking_utensils", label: "Utensils", icon: CookingPot },
 ];
 
 function ShoppingHome() {
-  // const slides = [bannerOne, bannerTwo, bannerThree]
   const [currentSlide, setCurrentSlide] = useState(0);
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
@@ -184,7 +181,7 @@ function ShoppingHome() {
 
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 font-primary">Shop by Brand</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 font-primary">Product Category</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {brandsWithIcon.map((brandItem) => (
               <Card
