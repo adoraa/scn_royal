@@ -11,7 +11,7 @@ function AdminDashboard() {
   const dispatch = useDispatch();
   const { featureImageList } = useSelector((state) => state.commonFeature);
 
-  console.log(uploadedImageUrl, "uploadedImageUrl");
+  // console.log(uploadedImageUrl, "uploadedImageUrl");
 
   function handleUploadFeatureImage() {
     dispatch(addFeatureImage(uploadedImageUrl)).then((data) => {
@@ -22,6 +22,9 @@ function AdminDashboard() {
       }
     });
   }
+
+  // Disable the button if no image is selected or the image hasn't fully loaded
+  const isButtonDisabled = !imageFile || !uploadedImageUrl;
 
   useEffect(() => {
     dispatch(getFeatureImages());
@@ -41,7 +44,11 @@ function AdminDashboard() {
         isCustomStyling={true}
         // isEditMode={currentEditedId !== null}
       />
-      <Button onClick={handleUploadFeatureImage} className="mt-5 w-full">
+      <Button
+        onClick={handleUploadFeatureImage}
+        disabled={isButtonDisabled}
+        className="mt-5 w-full"
+      >
         Upload
       </Button>
       <div className="flex flex-col gap-4 mt-5">
