@@ -14,11 +14,10 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+require('dotenv').config();
 
 mongoose
-  .connect(
-    "mongodb+srv://onyile1523:QNQTRVQ0e53H74AK@scncluster.nmfam.mongodb.net/"
-  )
+  .connect(process.env.DB_URL)
   .then(() => console.log("MongoDB Connected!"))
   .catch((error) => console.log(error));
 
