@@ -41,18 +41,12 @@ function App() {
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
+        {/* Home and default shop layout */}
         <Route path="/" element={<ShoppingLayout/>} > 
           <Route path="/" element={<ShoppingHome />} />
         </Route>
-        {/* <Route
-          path="/"
-          element={
-            <CheckAuth
-              isAuthenticated={isAuthenticated}
-              user={user}
-            ></CheckAuth>
-          }
-        /> */}
+
+        {/* Auth routes */}
         <Route
           path="/auth"
           element={
@@ -70,7 +64,7 @@ function App() {
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="account" element={<ShoppingAccount />} />
-          {/* Cart accessible without authentication */}
+          {/* Cart inaccessible without authentication */}
           <Route
             path="checkout"
             element={
@@ -81,6 +75,7 @@ function App() {
               )
             }
           />
+          {/* Payment inaccessible without authentication */}
           <Route
             path="payment-success"
             element={
@@ -91,9 +86,11 @@ function App() {
               )
             }
           />
+          {/* <Route path="paypal-return" element={<PaypalReturnPage />} /> */}
           <Route path="search" element={<SearchProducts />} />
         </Route>
 
+        {/* Admin routes */}
         <Route
           path="/admin"
           element={
@@ -107,22 +104,6 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
           <Route path="categories" element={<AdminCategories/>} />
-        </Route>
-        <Route
-          path="/shop"
-          element={
-            // <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <ShoppingLayout />
-            // </CheckAuth>
-          }
-        >
-          <Route path="home" element={<ShoppingHome />} />
-          <Route path="listing" element={<ShoppingListing />} />
-          <Route path="checkout" element={<ShoppingCheckout />} />
-          <Route path="account" element={<ShoppingAccount />} />
-          {/* <Route path="paypal-return" element={<PaypalReturnPage />} /> */}
-          <Route path="payment-success" element={<PaymentSuccessPage />} />
-          <Route path="search" element={<SearchProducts />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
