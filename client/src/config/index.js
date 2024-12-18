@@ -142,7 +142,7 @@ export const categoryOptionsMap = {
   men: "Men",
   women: "Women",
   kids: "Kids",
-  accessories: "Neutral",
+  neutral: "Neutral",
 };
 
 export const brandOptionsMap = {

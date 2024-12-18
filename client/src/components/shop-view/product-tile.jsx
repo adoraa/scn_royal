@@ -32,10 +32,10 @@ function ShoppingProductTile({
           ) : null}
         </div>
         <CardContent className="p-4">
-          <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
+          <h2 className="text-xl font-bold mb-2">{product?.title?.split(' ').slice(0, 2).join(' ')}</h2>
           <div className="flex justify-between items-center mb-2">
             <span className="text-[16px] text-muted-foreground">
-              {categoryOptionsMap[product?.category]}
+              {categoryOptionsMap[product?.category]}              
             </span>
             <span className="text-[16px] text-muted-foreground">
               {brandOptionsMap[product?.brand] || " "}
