@@ -3,9 +3,9 @@ const Product = require("../../models/Product");
 
 const addToCart = async (req, res) => {
   try {
-    const { userId, productId, quantity } = req.body;
+    const { userId, productId, quantity, sessionId } = req.body;
 
-    if (!userId || !productId || quantity <= 0) {
+    if ((!userId && !sessionId) || !productId || quantity <= 0) {
       return res.status(400).json({
         success: false,
         message: "Invalid data!",
@@ -21,10 +21,10 @@ const addToCart = async (req, res) => {
       });
     }
 
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne(userId ? { userId } : { sessionId });
 
     if (!cart) {
-      cart = new Cart({ userId, items: [] });
+      cart = new Cart({ userId, sessionId, items: [] });
     }
 
     const findCurrentProductIndex = cart.items.findIndex(

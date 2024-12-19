@@ -42,7 +42,7 @@ function App() {
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
         {/* Home and default shop layout */}
-        <Route path="/" element={<ShoppingLayout/>} > 
+        <Route path="/" element={<ShoppingLayout />}>
           <Route path="/" element={<ShoppingHome />} />
         </Route>
 
@@ -63,8 +63,18 @@ function App() {
         <Route path="/shop" element={<ShoppingLayout />}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
-          <Route path="account" element={<ShoppingAccount />} />
-          {/* Cart inaccessible without authentication */}
+          {/* Shop account inaccessible without authentication */}
+          <Route
+            path="account"
+            element={
+              isAuthenticated ? (
+                <ShoppingAccount />
+              ) : (
+                <Navigate to="/auth/login" />
+              )
+            }
+          />
+          {/* Checkout inaccessible without authentication */}
           <Route
             path="checkout"
             element={
@@ -103,7 +113,7 @@ function App() {
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
-          <Route path="categories" element={<AdminCategories/>} />
+          <Route path="categories" element={<AdminCategories />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />

@@ -76,10 +76,10 @@ function UserCartItemsContent({ cartItem }) {
       <img
         src={cartItem?.image}
         alt={cartItem?.title}
-        className="min-w-20 h-20 rounded object-cover"
+        className="min-w-20 max-w-20 md:min-w-48 h-20 rounded object-cover"
       />
       <div className="flex-1">
-        <h3 className="font-bold">{cartItem?.title}</h3>
+        <h3 className="font-bold max-w-40">{cartItem?.title}</h3>
         <div className="flex items-center gap-2 mt-1">
           <Button
             variant="outline"

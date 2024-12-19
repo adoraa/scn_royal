@@ -72,15 +72,17 @@ function ShoppingHome() {
   }
 
   function handleAddtoCart(getCurrentProductId) {
+    const guestId = 'guest';
+    const currentUserId = user?.id || guestId;
     dispatch(
       addToCart({
-        userId: user?.id,
+        userId: currentUserId,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems(currentUserId));
         toast({
           title: "Product added to cart",
         });

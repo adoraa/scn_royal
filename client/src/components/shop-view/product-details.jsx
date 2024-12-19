@@ -30,6 +30,8 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   }
 
   function handleAddToCart(getCurrentProductId, getTotalStock) {
+    const guestId = localStorage.getItem("guestId") || generateGuestId();
+    const currentUserId = user?.id || guestId;
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -50,18 +52,25 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     }
     dispatch(
       addToCart({
-        userId: user?.id,
+        userId: currentUserId,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems(currentUserId));
         toast({
           title: "Product added to cart",
         });
       }
     });
+  }
+
+  // Function to generate a random guestId if not already set
+  function generateGuestId() {
+    const newGuestId = `guest_${Math.random().toString(36).substring(2, 15)}`;
+    localStorage.setItem("guestId", newGuestId);
+    return newGuestId;
   }
 
   function handleDialogClose() {
@@ -118,7 +127,9 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         </div>
         <div className="">
           <div>
-            <h1 className="text-2xl font-bold font-primary">{productDetails?.title}</h1>
+            <h1 className="text-2xl font-bold font-primary">
+              {productDetails?.title}
+            </h1>
             <p className="text-muted-foreground text-xl mb-5 mt-4">
               {productDetails?.description}
             </p>
@@ -178,7 +189,9 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                     </Avatar>
                     <div className="grid gap-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 min-w-0">
-                        <h3 className="font-bold truncate">{reviewItem?.username}</h3>
+                        <h3 className="font-bold truncate">
+                          {reviewItem?.username}
+                        </h3>
                       </div>
                       <div className="flex items-center gap-0.5 flex-wrap min-w-0">
                         <StarRatingComponent rating={reviewItem?.reviewValue} />
