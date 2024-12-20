@@ -29,6 +29,16 @@ export const addFeatureImage = createAsyncThunk(
   }
 );
 
+export const deleteFeatureImage = createAsyncThunk(
+  "/order/deleteFeatureImage",
+  async (id) => {
+    const response = await axios.delete(
+      `https://scn-royal-server.vercel.app/api/common/feature/delete/${id}`
+    );
+    return response.data;
+  }
+);
+
 const commonSlice = createSlice({
   name: "commonSlice",
   initialState,
@@ -45,6 +55,21 @@ const commonSlice = createSlice({
       .addCase(getFeatureImages.rejected, (state) => {
         state.isLoading = false;
         state.featureImageList = [];
+      })
+      .addCase(addFeatureImage.fulfilled, (state, action) => {
+        state.featureImageList.push(action.payload.data);
+      })
+      .addCase(deleteFeatureImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteFeatureImage.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.featureImageList = state.featureImageList.filter(
+          (feature) => feature._id !== action.meta.arg
+        );
+      })
+      .addCase(deleteFeatureImage.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });
