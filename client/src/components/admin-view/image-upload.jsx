@@ -53,7 +53,6 @@ function ProductImageUpload({
       "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
       data
     );
-    // console.log(response, "response");
 
     if (response?.data?.success) {
       setUploadedImageUrl(response.data.result.url);

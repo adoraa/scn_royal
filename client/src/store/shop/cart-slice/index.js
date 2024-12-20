@@ -6,13 +6,24 @@ const initialState = {
   isLoading: false,
 };
 
+const getGuestId = () => {
+  let guestId = localStorage.getItem('guestId');
+  if (!guestId) {
+    guestId = `guest_${Date.now()}`; // Create a unique guest ID
+    localStorage.setItem('guestId', guestId);
+  }
+  return guestId;
+};
+
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async ({ userId, productId, quantity }) => {
+    // If no user is logged in, use guestId
+    const guestId = !userId ? getGuestId() : userId;
     const response = await axios.post(
       "https://scn-royal-server.vercel.app/api/shop/cart/add",
       {
-        userId,
+        userId: guestId,
         productId,
         quantity,
       }
@@ -25,8 +36,9 @@ export const addToCart = createAsyncThunk(
 export const fetchCartItems = createAsyncThunk(
   "cart/fetchCartItems",
   async (userId) => {
+    const guestId = !userId ? getGuestId() : userId;
     const response = await axios.get(
-      `https://scn-royal-server.vercel.app/api/shop/cart/get/${userId}`
+      `https://scn-royal-server.vercel.app/api/shop/cart/get/${guestId}`
     );
 
     return response.data;
@@ -36,8 +48,9 @@ export const fetchCartItems = createAsyncThunk(
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
   async ({ userId, productId }) => {
+    const guestId = !userId ? getGuestId() : userId;
     const response = await axios.delete(
-      `https://scn-royal-server.vercel.app/api/shop/cart/${userId}/${productId}`
+      `https://scn-royal-server.vercel.app/api/shop/cart/${guestId}/${productId}`
     );
 
     return response.data;
@@ -47,10 +60,11 @@ export const deleteCartItem = createAsyncThunk(
 export const updateCartQuantity = createAsyncThunk(
   "cart/updateCartQuantity",
   async ({ userId, productId, quantity }) => {
+    const guestId = !userId ? getGuestId() : userId;
     const response = await axios.put(
       "https://scn-royal-server.vercel.app/api/shop/cart/update-cart",
       {
-        userId,
+        userId: guestId,
         productId,
         quantity,
       }
@@ -70,8 +84,9 @@ const shoppingCartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
+        console.log('Cart payload:', action.payload);
         state.isLoading = false;
-        state.cartItems = action.payload.data;
+        state.cartItems = action.payload?.data || [];
       })
       .addCase(addToCart.rejected, (state) => {
         state.isLoading = false;
