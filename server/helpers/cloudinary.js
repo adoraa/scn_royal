@@ -1,10 +1,11 @@
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
+require('dotenv').config();
 
 cloudinary.config({
-  cloud_name: "dv8wobz6l",
-  api_key: "297578588665596",
-  api_secret: "p1olEfWegpnlyfH5V7AntjG1IaE",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true,
 });
 
