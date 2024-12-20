@@ -34,7 +34,7 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
 
-  if (isLoading) return <Skeleton className="w-[800] bg-black h-[600px]" />;
+  if (isLoading) return <Skeleton className="w-[800] bg-primaryBlue h-[600px]" />;
 
   console.log(isLoading, user);
 
@@ -112,7 +112,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="orders" element={<AdminOrders />} />
-          <Route path="features" element={<AdminFeatures />} />
+          <Route path="featured-images" element={<AdminFeatures />} />
           <Route path="categories" element={<AdminCategories />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />

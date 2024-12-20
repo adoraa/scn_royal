@@ -4,6 +4,7 @@ import {
   ShoppingBasket,
   LayoutGrid,
   ChartNoAxesColumn,
+  Images,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +34,12 @@ const adminSidebarMenuItems = [
     label: "Orders",
     path: "/admin/orders",
     icon: <BadgeCheck />,
+  },
+  {
+    id: "featuredImage",
+    label: "Featured Images",
+    path: "/admin/featured-images",
+    icon: <Images />,
   },
 ];
 
