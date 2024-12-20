@@ -46,7 +46,7 @@ const getFeatureImages = async (req, res) => {
 const deleteFeatureImage = async (req, res) => {
   try {
     const { id } = req.params;
-    const featureImage = await Feature.findById(id);
+    const featureImage = await Feature.findByIdAndDelete(id);
     if (!featureImage) {
       return res
         .status(404)
