@@ -25,7 +25,7 @@ function AdminFeatures() {
   }
 
   function handleDeleteImage(id) {
-    console.log("Deleting image with ID:", id);
+    // console.log("Deleting image with ID:", id);
     dispatch(deleteFeatureImage(id)).then((data) => {
       if (data?.payload?.success) {
         dispatch(getFeatureImages());
