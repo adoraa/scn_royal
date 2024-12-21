@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import PaymentSuccessPage from "./pages/shop-view/payment-success";
 import SearchProducts from "./pages/shop-view/search";
 import AdminCategories from "./pages/admin-view/categories";
+import ManageUsers from "./pages/admin-view/manageUsers";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -114,6 +115,7 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="featured-images" element={<AdminFeatures />} />
           <Route path="categories" element={<AdminCategories />} />
+          <Route path="manage-users" element={<ManageUsers /> } />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />

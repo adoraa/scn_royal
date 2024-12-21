@@ -5,6 +5,7 @@ import {
   LayoutGrid,
   ChartNoAxesColumn,
   Images,
+  Users,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +35,12 @@ const adminSidebarMenuItems = [
     label: "Orders",
     path: "/admin/orders",
     icon: <BadgeCheck />,
+  },
+  {
+    id: "manage-users",
+    label: "Manage Users",
+    path: "/admin/manage-users",
+    icon: <Users />,
   },
   {
     id: "featuredImage",
