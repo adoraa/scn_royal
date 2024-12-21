@@ -3,15 +3,20 @@ const cloudinary = require("cloudinary").v2;
 
 const addFeatureImage = async (req, res) => {
   try {
-    const { image } = req.body;
+    const { images } = req.body;
 
-    console.log(image, "image");
+    // console.log(image, "image");
 
-    const featureImages = new Feature({
-      image,
-    });
+    if (!Array.isArray(images) || images.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No images provided!",
+      });
+    }
 
-    await featureImages.save();
+    const featureImages = await Feature.insertMany(
+      images.map((image) => ({ image }))
+    );
 
     res.status(201).json({
       success: true,
@@ -65,7 +70,7 @@ const deleteFeatureImage = async (req, res) => {
     const publicId = imageUrl.split("/").pop().split(".")[0];
 
     // console.log("Public ID:", publicId);
-    
+
     const result = await cloudinary.uploader.destroy(publicId);
     if (result.result !== "ok") {
       return res.status(500).json({

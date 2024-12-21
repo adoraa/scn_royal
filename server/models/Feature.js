@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const FeatureSchema = new mongoose.Schema(
   {
-    image: String,
+    images: [String],
   },
   { timestamps: true }
 );

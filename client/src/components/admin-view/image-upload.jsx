@@ -7,8 +7,8 @@ import { Skeleton } from "../ui/skeleton";
 import axios from "axios";
 
 function ProductImageUpload({
-  imageFile,
-  setImageFile,
+  imageFiles,
+  setImageFiles,
   imageLoadingState,
   uploadedImageUrl,
   setUploadedImageUrl,
@@ -22,10 +22,12 @@ function ProductImageUpload({
 
   function handleImageFileChange(event) {
     // console.log(event.target.files, "event.target.files");
-    const selectedFile = event.target.files?.[0];
+    const selectedFiles = event.target.files;
     // console.log(selectedFile);
 
-    if (selectedFile) setImageFile(selectedFile);
+    if (selectedFiles && selectedFiles.length > 0) {
+      setImageFiles([...selectedFiles]);
+    }
   }
 
   function handleDragOver(event) {
@@ -35,34 +37,39 @@ function ProductImageUpload({
   function handleDrop(event) {
     event.preventDefault();
     const droppedFile = event.dataTransfer.files?.[0];
-    if (droppedFile) setImageFile(droppedFile);
+    if (droppedFile) setImageFiles(droppedFile);
   }
 
-  function handleRemoveImage() {
-    setImageFile(null);
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
+  function handleRemoveImage(index) {
+    const newImageFiles = [...imageFiles];
+    newImageFiles.splice(index, 1);
+    setImageFiles(newImageFiles);
   }
 
   async function uploadImageToCloudinary() {
     setImageLoadingState(true);
-    const data = new FormData();
-    data.append("my_file", imageFile);
-    const response = await axios.post(
-      "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
-      data
-    );
+    const uploadedUrls = [];
 
-    if (response?.data?.success) {
-      setUploadedImageUrl(response.data.result.url);
-      setImageLoadingState(false);
+    for (let file of imageFiles) {
+      const data = new FormData();
+      data.append("my_file", file);
+      const response = await axios.post(
+        "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
+        data
+      );
+
+      if (response?.data?.success) {
+        uploadedUrls.push(response.data.result.url);
+      }
     }
+
+    setUploadedImageUrls(uploadedUrls);
+    setImageLoadingState(false);
   }
 
   useEffect(() => {
-    if (imageFile !== null) uploadImageToCloudinary();
-  }, [imageFile]);
+    if (imageFiles.length > 0) uploadImageToCloudinary();
+  }, [imageFiles]);
 
   return (
     <div
@@ -83,36 +90,28 @@ function ProductImageUpload({
           ref={inputRef}
           onChange={handleImageFileChange}
           disabled={isEditMode}
+          multiple
         />
-        {!imageFile ? (
-          <Label
-            htmlFor="image-upload"
-            className={`${
-              isEditMode ? "cursor-not-allowed" : ""
-            } flex flex-col items-center justify-center h-32 cursor-pointer`}
-          >
-            <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
-            <span>Drag & drop or click to upload image</span>
-          </Label>
-        ) : imageLoadingState ? (
-          <Skeleton className="h-10 bg-gray-100" />
-        ) : (
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <FileIcon className="w-8 text-primary mr-2 h-8" />
+        <Label htmlFor="image-upload" className="cursor-pointer flex flex-col">
+          <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
+          <span>Drag & drop or click to upload images</span>
+        </Label>
+
+        <div>
+          {imageFiles.map((file, index) => (
+            <div key={index} className="flex items-center justify-between mt-2">
+              <p className="text-sm font-medium">{file.name}</p>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleRemoveImage(index)}
+              >
+                <XIcon className="w-4 h-4" />
+                <span className="sr-only">Remove File</span>
+              </Button>
             </div>
-            <p className="text-sm font-medium">{imageFile.name}</p>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-muted-foreground hover:text-foreground"
-              onClick={handleRemoveImage}
-            >
-              <XIcon className="w-4 h-4" />
-              <span className="sr-only">Remove File</span>
-            </Button>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     </div>
   );
