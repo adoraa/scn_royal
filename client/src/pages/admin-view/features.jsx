@@ -74,7 +74,7 @@ function AdminFeatures() {
                   variant="ghost"
                   size="icon"
                   className="absolute top-2 right-2 text-red-500 bg-red-200 hover:text-red-700"
-                  onClick={() => handleDeleteImage(featureImgItem.id)}
+                  onClick={() => handleDeleteImage(featureImgItem._id)}
                 >
                   {" "}
                   <Trash className="w-6 h-6" style={{ strokeWidth: 2.5 }} />{" "}
