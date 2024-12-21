@@ -37,7 +37,7 @@ const brandsWithIcon = [
   { id: "accessories", label: "Accessories", icon: Gem },
   { id: "clothes", label: "Clothes", icon: Shirt },
   { id: "electronics", label: "Electronics", icon: Laptop },
-  { id: "travel_luggage", label: "Luggages", icon: Luggage },
+  { id: "travel_luggage", label: "Luggages & Bags", icon: Luggage },
   { id: "perfume", label: "Perfumes", icon: SprayCan },
   { id: "housewares", label: "Housewares", icon: CookingPot },
 ];
@@ -192,7 +192,7 @@ function ShoppingHome() {
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="font-bold">{brandItem.label}</span>
+                  <span className="font-bold text-nowrap">{brandItem.label}</span>
                 </CardContent>
               </Card>
             ))}
