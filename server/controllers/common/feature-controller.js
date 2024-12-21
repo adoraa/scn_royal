@@ -53,19 +53,23 @@ const deleteFeatureImage = async (req, res) => {
         .json({ success: false, message: "Featured image not found" });
     }
     const imageUrl = featureImage.image;
-    const publicId = imageUrl.split("/").pop().split(".")[0];
-    await cloudinary.uploader.destroy(publicId, (error, result) => {
-      if (error) {
-        console.log("Cloudinary image deletion error:", error);
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: "Error occurred while deleting image from Cloudinary",
-          });
-      }
-    });
-    await featureImage.remove();
+    if (!imageUrl) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Image URL is missing" });
+    }
+    console.log("Image URL to delete:", imageUrl);
+    // Extracting public_id from the image URL
+    // Where Cloudinary URL is https://res.cloudinary.com/demo/image/upload/v1234567890/sample.jpg
+    const publicId = imageUrl.split("/").slice(-2).join("/").split(".")[0];
+    console.log("Public ID:", publicId);
+    const result = await cloudinary.uploader.destroy(publicId);
+    if (result.result !== "ok") {
+      return res.status(500).json({
+        success: false,
+        message: "Error occurred while deleting image from Cloudinary",
+      });
+    }
     res
       .status(200)
       .json({ success: true, message: "Feature image deleted successfully" });
