@@ -19,10 +19,10 @@ export const getFeatureImages = createAsyncThunk(
 
 export const addFeatureImage = createAsyncThunk(
   "/order/addFeatureImage",
-  async (image) => {
+  async (images) => {
     const response = await axios.post(
       `https://scn-royal-server.vercel.app/api/common/feature/add`,
-      { image }
+      { images }
     );
 
     return response?.data;
@@ -32,7 +32,7 @@ export const addFeatureImage = createAsyncThunk(
 export const deleteFeatureImage = createAsyncThunk(
   "/order/deleteFeatureImage",
   async (id) => {
-    console.log('Deleting image with ID:', id);
+    console.log("Deleting image with ID:", id);
     const response = await axios.delete(
       `https://scn-royal-server.vercel.app/api/common/feature/delete/${id}`
     );
@@ -58,7 +58,10 @@ const commonSlice = createSlice({
         state.featureImageList = [];
       })
       .addCase(addFeatureImage.fulfilled, (state, action) => {
-        state.featureImageList.push(action.payload.data);
+        state.featureImageList = [
+          ...state.featureImageList,
+          ...action.payload.data,
+        ];
       })
       .addCase(deleteFeatureImage.pending, (state) => {
         state.isLoading = true;

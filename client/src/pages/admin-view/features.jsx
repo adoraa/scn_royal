@@ -25,6 +25,9 @@ function AdminFeatures() {
           dispatch(getFeatureImages());
           setImageFiles([]);
           setUploadedImageUrls([]);
+          toast({
+            title: "Upload successful!",
+          });
         }
       });
     }
@@ -42,12 +45,14 @@ function AdminFeatures() {
     });
   }
 
-  // Disable the button if no image is selected or the image hasn't fully loaded
-  const isButtonDisabled = imageFiles.length === 0 || imageLoadingState;
-
   useEffect(() => {
     dispatch(getFeatureImages());
   }, [dispatch]);
+
+  // Sort the featureImageList by createdAt in descending order
+  const sortedFeatureImages = featureImageList
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div>
@@ -63,15 +68,15 @@ function AdminFeatures() {
       />
       <Button
         onClick={handleUploadFeatureImage}
-        disabled={isButtonDisabled}
+        disabled={imageFiles.length === 0}
         className="mt-5 w-full"
       >
         Upload
       </Button>
       <div className="flex flex-col gap-4 mt-5">
-        {featureImageList &&
-          featureImageList.length > 0 &&
-          featureImageList.map((featureImgItem) => (
+        {sortedFeatureImages &&
+          sortedFeatureImages.length > 0 &&
+          sortedFeatureImages.map((featureImgItem) => (
             <div className="relative" key={featureImgItem._id}>
               <img
                 src={featureImgItem.image}
