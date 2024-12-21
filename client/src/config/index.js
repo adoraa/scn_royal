@@ -54,7 +54,7 @@ export const addProductFormElements = [
     placeholder: "Enter product description",
   },
   {
-    label: "Category",
+    label: "Category (optional)",
     name: "category",
     componentType: "select",
     options: [
@@ -74,7 +74,7 @@ export const addProductFormElements = [
       { id: "electronics", label: "Electronics" },
       { id: "travel_luggage", label: "Luggages" },
       { id: "perfume", label: "Perfumes" },
-      { id: "cooking_utensils", label: "Utensils" },
+      { id: "housewares", label: "Housewares" },
     ],
   },
   {
@@ -151,7 +151,7 @@ export const brandOptionsMap = {
   electronics: "Electronics",
   travel_luggage: "Luggages",
   perfume: "Perfumes",
-  cooking_utensils: "Utensils",
+  housewares: "Housewares",
 };
 
 export const filterOptions = {
@@ -167,7 +167,7 @@ export const filterOptions = {
     { id: "electronics", label: "Electronics" },
     { id: "travel_luggage", label: "Luggages" },
     { id: "perfume", label: "Perfumes" },
-    { id: "cooking_utensils", label: "Utensils" },
+    { id: "housewares", label: "Housewares" },
   ],
 };
 

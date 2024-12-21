@@ -39,7 +39,7 @@ const brandsWithIcon = [
   { id: "electronics", label: "Electronics", icon: Laptop },
   { id: "travel_luggage", label: "Luggages", icon: Luggage },
   { id: "perfume", label: "Perfumes", icon: SprayCan },
-  { id: "cooking_utensils", label: "Utensils", icon: CookingPot },
+  { id: "housewares", label: "Housewares", icon: CookingPot },
 ];
 
 function ShoppingHome() {
