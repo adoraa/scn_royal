@@ -11,19 +11,13 @@ function ProductImageUpload({
   setImageFiles,
   imageLoadingState,
   uploadedImageUrl,
-  setUploadedImageUrls,
-  setImageLoadingState,
   isEditMode,
   isCustomStyling = false,
 }) {
   const inputRef = useRef(null);
 
-  // console.log(isEditMode, "isEditMode");
-
   function handleImageFileChange(event) {
-    // console.log(event.target.files, "event.target.files");
     const selectedFiles = event.target.files;
-    // console.log(selectedFile);
 
     if (selectedFiles && selectedFiles.length > 0) {
       setImageFiles((prevFiles) => [
@@ -50,31 +44,6 @@ function ProductImageUpload({
     newImageFiles.splice(index, 1);
     setImageFiles(newImageFiles);
   }
-
-  async function uploadImageToCloudinary() {
-    setImageLoadingState(true);
-    const uploadedUrls = [];
-
-    for (let file of imageFiles) {
-      const data = new FormData();
-      data.append("my_file", file);
-      const response = await axios.post(
-        "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
-        data
-      );
-
-      if (response?.data?.success) {
-        uploadedUrls.push(response.data.result.url);
-      }
-    }
-
-    setUploadedImageUrls(uploadedUrls);
-    setImageLoadingState(false);
-  }
-
-  useEffect(() => {
-    if (imageFiles.length > 0) uploadImageToCloudinary();
-  }, [imageFiles]);
 
   return (
     <div

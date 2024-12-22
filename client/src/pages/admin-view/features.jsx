@@ -9,6 +9,7 @@ import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 function AdminFeatures() {
   const [imageFiles, setImageFiles] = useState([]);
@@ -18,9 +19,28 @@ function AdminFeatures() {
   const { featureImageList } = useSelector((state) => state.commonFeature);
   const { toast } = useToast();
 
-  function handleUploadFeatureImage() {
-    if (uploadedImageUrls.length > 0) {
-      dispatch(addFeatureImage(uploadedImageUrls)).then((data) => {
+  async function handleUploadFeatureImage() {
+    setImageLoadingState(true);
+    const uploadedUrls = [];
+
+    for (let file of imageFiles) {
+      const data = new FormData();
+      data.append("my_file", file);
+      const response = await axios.post(
+        "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
+        data
+      );
+
+      if (response?.data?.success) {
+        uploadedUrls.push(response.data.result.url);
+      }
+    }
+
+    setUploadedImageUrls(uploadedUrls);
+    setImageLoadingState(false);
+
+    if (uploadedUrls.length > 0) {
+      dispatch(addFeatureImage(uploadedUrls)).then((data) => {
         if (data?.payload?.success) {
           dispatch(getFeatureImages());
           setImageFiles([]);
@@ -59,24 +79,19 @@ function AdminFeatures() {
       <ProductImageUpload
         imageFiles={imageFiles}
         setImageFiles={setImageFiles}
-        uploadedImageUrls={uploadedImageUrls}
-        setUploadedImageUrls={setUploadedImageUrls}
-        setImageLoadingState={setImageLoadingState}
         imageLoadingState={imageLoadingState}
         isCustomStyling={true}
         // isEditMode={currentEditedId !== null}
       />
       <Button
         onClick={handleUploadFeatureImage}
-        disabled={imageFiles.length === 0}
+        disabled={imageFiles.length === 0 || imageLoadingState}
         className="mt-5 w-full"
       >
         Upload
       </Button>
       <div className="flex flex-col gap-4 mt-5">
-        {sortedFeatureImages &&
-          sortedFeatureImages.length > 0 &&
-          sortedFeatureImages.map((featureImgItem) => (
+        {sortedFeatureImages.map((featureImgItem) => (
             <div className="relative" key={featureImgItem._id}>
               <img
                 src={featureImgItem.image}
