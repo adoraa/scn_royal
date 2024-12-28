@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import AdminProductTile from "@/components/admin-view/product-tile";
+import axios from "axios";
 
 const initialFormData = {
   images: [],
@@ -43,45 +44,79 @@ function AdminProducts() {
   const dispatch = useDispatch();
   const { toast } = useToast();
 
-  function onSubmit(event) {
+  async function handleUploadProductImages() {
+    setImageLoadingState(true);
+    const uploadedUrls = [];
+
+    for (let file of imageFiles) {
+      const data = new FormData();
+      data.append("my_file", file);
+      const response = await axios.post(
+        "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
+        data
+      );
+
+      if (response?.data?.success) {
+        uploadedUrls.push(response.data.result.url);
+      }
+    }
+
+    setImageLoadingState(false);
+    return uploadedUrls;
+  }
+
+  async function onSubmit(event) {
     event.preventDefault();
 
-    const formWithImages = {
-      ...formData,
-      images: uploadedImageUrls,
-    };
+    const uploadedUrls = await handleUploadProductImages();
 
-    currentEditedId !== null
-      ? dispatch(
+    if (uploadedUrls.length > 0) {
+      const formWithImages = {
+        ...formData,
+        images: uploadedUrls,
+      };
+
+      if (currentEditedId !== null) {
+        // Edit product
+        dispatch(
           editProduct({
             id: currentEditedId,
             formData: formWithImages,
           })
         ).then((data) => {
-          // console.log(data, "edit");
-
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
             setFormData(initialFormData);
             setOpenCreateProductsDialog(false);
             setCurrentEditedId(null);
+            setImageFiles([]);
+            setUploadedImageUrls([]);
             toast({
               title: "Product edited successfully",
             });
           }
-        })
-      : dispatch(addNewProduct(formWithImages)).then((data) => {
+        });
+      } else {
+        // Add new product
+        dispatch(addNewProduct(formWithImages)).then((data) => {
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
             setOpenCreateProductsDialog(false);
+            setFormData(initialFormData);
             setImageFiles([]);
             setUploadedImageUrls([]);
-            setFormData(initialFormData);
             toast({
               title: "Product added successfully",
             });
           }
         });
+      }
+    } else {
+      toast({
+        title: "Image upload failed.",
+        variant: "destructive",
+      });
+    }
   }
 
   function handleDelete(getCurrentProductId) {
@@ -123,6 +158,7 @@ function AdminProducts() {
         {productList && productList.length > 0
           ? productList.map((productItem) => (
               <AdminProductTile
+                key={productItem._id}
                 setFormData={setFormData}
                 setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                 setCurrentEditedId={setCurrentEditedId}
@@ -138,6 +174,8 @@ function AdminProducts() {
           setOpenCreateProductsDialog(false);
           setCurrentEditedId(null);
           setFormData(initialFormData);
+          setImageFiles([]);
+          setUploadedImageUrls([]);
         }}
       >
         <SheetContent side="right" className="overflow-auto">
@@ -162,7 +200,7 @@ function AdminProducts() {
               setFormData={setFormData}
               buttonText={currentEditedId !== null ? "Edit" : "Add"}
               formControls={addProductFormElements}
-              isBtnDisabled={!isFormValid()}
+              isBtnDisabled={!isFormValid() || imageLoadingState}
             />
           </div>
         </SheetContent>
