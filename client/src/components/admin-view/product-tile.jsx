@@ -12,11 +12,22 @@ function AdminProductTile({
     <Card className="w-full max-w-sm mx-auto">
       <div>
         <div className="relative">
-          <img
-            src={product?.image}
-            alt={product?.title}
-            className="w-full h-[300px] object-cover rounded-t-lg"
-          />
+          {product?.images?.length > 0 ? (
+            product.images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`${product?.title}-${index}`}
+                className="w-full h-[300px] object-cover rounded-t-lg mb-2"
+              />
+            ))
+          ) : (
+            <img
+              src={product?.image}
+              alt={product?.title}
+              className="w-full h-[300px] object-cover rounded-t-lg"
+            />
+          )}
         </div>
         <CardContent>
           <h2 className="text-xl font-bold mb-2 mt-2">{product?.title}</h2>

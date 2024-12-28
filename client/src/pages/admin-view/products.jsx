@@ -20,7 +20,7 @@ import ProductImageUpload from "@/components/admin-view/image-upload";
 import AdminProductTile from "@/components/admin-view/product-tile";
 
 const initialFormData = {
-  image: null,
+  images: [],
   title: "",
   description: "",
   category: "",
@@ -35,8 +35,8 @@ function AdminProducts() {
   const [openCreateProductsDialog, setOpenCreateProductsDialog] =
     useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  const [imageFile, setImageFile] = useState(null);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [imageFiles, setImageFiles] = useState([]);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const { productList } = useSelector((state) => state.adminProducts);
@@ -46,14 +46,19 @@ function AdminProducts() {
   function onSubmit(event) {
     event.preventDefault();
 
+    const formWithImages = {
+      ...formData,
+      images: uploadedImageUrls,
+    };
+
     currentEditedId !== null
       ? dispatch(
           editProduct({
             id: currentEditedId,
-            formData,
+            formData: formWithImages,
           })
         ).then((data) => {
-          console.log(data, "edit");
+          // console.log(data, "edit");
 
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
@@ -65,16 +70,12 @@ function AdminProducts() {
             });
           }
         })
-      : dispatch(
-          addNewProduct({
-            ...formData,
-            image: uploadedImageUrl,
-          })
-        ).then((data) => {
+      : dispatch(addNewProduct(formWithImages)).then((data) => {
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
             setOpenCreateProductsDialog(false);
-            setImageFile(null);
+            setImageFiles([]);
+            setUploadedImageUrls([]);
             setFormData(initialFormData);
             toast({
               title: "Product added successfully",
@@ -96,7 +97,13 @@ function AdminProducts() {
 
   function isFormValid() {
     return Object.keys(formData)
-      .filter((currentKey) => currentKey !== "averageReview" && currentKey !== "salePrice" && currentKey !== "brand")
+      .filter(
+        (currentKey) =>
+          currentKey !== "averageReview" &&
+          currentKey !== "salePrice" &&
+          currentKey !== "brand" &&
+          currentKey !== "images"
+      )
       .map((key) => formData[key] !== "")
       .every((item) => item);
   }
@@ -104,8 +111,6 @@ function AdminProducts() {
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
-
-  // console.log(formData, "productList");
 
   return (
     <Fragment>
@@ -142,10 +147,10 @@ function AdminProducts() {
             </SheetTitle>
           </SheetHeader>
           <ProductImageUpload
-            imageFile={imageFile}
-            setImageFile={setImageFile}
-            uploadedImageUrl={uploadedImageUrl}
-            setUploadedImageUrl={setUploadedImageUrl}
+            imageFiles={imageFiles}
+            setImageFiles={setImageFiles}
+            uploadedImageUrls={uploadedImageUrls}
+            setUploadedImageUrls={setUploadedImageUrls}
             setImageLoadingState={setImageLoadingState}
             imageLoadingState={imageLoadingState}
             isEditMode={currentEditedId !== null}

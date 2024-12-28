@@ -22,11 +22,10 @@ const handleImageUpload = async (req, res) => {
 };
 
 //add a new product
-//add
 const addProduct = async (req, res) => {
   try {
     const {
-      image,
+      images,
       title,
       description,
       category,
@@ -40,7 +39,7 @@ const addProduct = async (req, res) => {
     console.log(averageReview, "averageReview");
 
     const newlyCreatedProduct = new Product({
-      image,
+      images,
       title,
       description,
       category,
@@ -87,7 +86,7 @@ const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      image,
+      images,
       title,
       description,
       category,
@@ -113,7 +112,7 @@ const editProduct = async (req, res) => {
     findProduct.salePrice =
       salePrice === "" ? 0 : salePrice || findProduct.salePrice;
     findProduct.totalStock = totalStock || findProduct.totalStock;
-    findProduct.image = image || findProduct.image;
+    findProduct.images = images || findProduct.images;
     findProduct.averageReview = averageReview || findProduct.averageReview;
 
     await findProduct.save();
@@ -144,20 +143,21 @@ const deleteProduct = async (req, res) => {
     }
 
     // Extract the public ID from the image URL
-    const imageUrl = product.image;
-    // Get the public ID without the file extension
-    const publicId = imageUrl.split("/").pop().split(".")[0];
+    for (const imageUrl of product.images) {
+      // Get the public ID without the file extension
+      const publicId = imageUrl.split("/").pop().split(".")[0];
 
-    // Delete the image from Cloudinary
-    await cloudinary.uploader.destroy(publicId, (error, result) => {
-      if (error) {
-        console.log("Cloudinary image deletion error:", error);
-        return res.status(500).json({
-          success: false,
-          message: "Error occurred while deleting image",
-        });
-      }
-    });
+      // Delete the image from Cloudinary
+      await cloudinary.uploader.destroy(publicId, (error, result) => {
+        if (error) {
+          console.log("Cloudinary image deletion error:", error);
+          return res.status(500).json({
+            success: false,
+            message: "Error occurred while deleting image",
+          });
+        }
+      });
+    }
 
     res.status(200).json({
       success: true,
