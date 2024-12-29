@@ -48,17 +48,24 @@ function AdminProducts() {
     setImageLoadingState(true);
     const uploadedUrls = [];
 
-    for (let file of imageFiles) {
-      const data = new FormData();
-      data.append("my_file", file);
-      const response = await axios.post(
-        "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
-        data
-      );
+    try {
+      for (let file of imageFiles) {
+        const data = new FormData();
+        data.append("my_file", file);
 
-      if (response?.data?.success) {
-        uploadedUrls.push(response.data.result.url);
+        const response = await axios.post(
+          "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
+          data
+        );
+
+        if (response?.data?.success) {
+          uploadedUrls.push(response.data.result.url);
+        } else {
+          console.error("Image upload failed:", response.data); // Log any failure in the response
+        }
       }
+    } catch (error) {
+      console.error("Error during image upload:", error); // Log any errors that occur during the upload
     }
 
     setImageLoadingState(false);
