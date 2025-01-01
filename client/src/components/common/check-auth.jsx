@@ -24,7 +24,14 @@ function CheckAuth({ isAuthenticated, user, children }) {
       location.pathname.includes("/register")
     )
   ) {
-    return <Navigate to="/auth/login" />;
+    if (
+      location.pathname.includes("/checkout") ||
+      location.pathname.includes("/payment-success")
+    ) {
+      return <>{children}</>;
+    } else {
+      return <Navigate to="/auth/login" />;
+    }
   }
 
   if (
@@ -39,6 +46,7 @@ function CheckAuth({ isAuthenticated, user, children }) {
     }
   }
 
+  // Prevent non-admin users from accessing admin routes
   if (
     isAuthenticated &&
     user?.role !== "admin" &&
