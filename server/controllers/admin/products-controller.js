@@ -4,9 +4,15 @@ const cloudinary = require("cloudinary").v2;
 
 const handleImageUpload = async (req, res) => {
   try {
-    const b64 = Buffer.from(req.file.buffer).toString("base64");
-    const url = "data:" + req.file.mimetype + ";base64," + b64;
-    const result = await imageUploadUtil(url);
+    const uploadedImages = [];
+
+    // Loop over the files and upload each one
+    for (const file of req.files) {
+      const b64 = Buffer.from(file.buffer).toString("base64");
+      const url = "data:" + file.mimetype + ";base64," + b64;
+      const result = await imageUploadUtil(url);
+      uploadedImages.push(result.url);
+    }
 
     res.json({
       success: true,

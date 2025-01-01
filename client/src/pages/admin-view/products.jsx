@@ -61,11 +61,20 @@ function AdminProducts() {
         if (response?.data?.success) {
           uploadedUrls.push(response.data.result.url);
         } else {
-          console.error("Image upload failed:", response.data); // Log any failure in the response
+          toast({
+            title: "Image upload failed",
+            description: `Failed to upload ${file.name}. Please try again.`,
+            variant: "destructive",
+          });
         }
       }
     } catch (error) {
       console.error("Error during image upload:", error); // Log any errors that occur during the upload
+      toast({
+        title: "Image upload error",
+        description: "An error occurred while uploading the images.",
+        variant: "destructive",
+      });
     }
 
     setImageLoadingState(false);
@@ -121,6 +130,7 @@ function AdminProducts() {
     } else {
       toast({
         title: "Image upload failed.",
+        description: "Please try again.",
         variant: "destructive",
       });
     }
