@@ -7,10 +7,10 @@ const initialState = {
 };
 
 const getGuestId = () => {
-  let guestId = localStorage.getItem('guestId');
+  let guestId = localStorage.getItem("guestId");
   if (!guestId) {
     guestId = `guest_${Date.now()}`; // Create a unique guest ID
-    localStorage.setItem('guestId', guestId);
+    localStorage.setItem("guestId", guestId);
   }
   return guestId;
 };
@@ -20,6 +20,9 @@ export const addToCart = createAsyncThunk(
   async ({ userId, productId, quantity }) => {
     // If no user is logged in, use guestId
     const guestId = !userId ? getGuestId() : userId;
+    console.log(
+      `Adding to cart - User: ${guestId}, Product: ${productId}, Quantity: ${quantity}`
+    );
     const response = await axios.post(
       "https://scn-royal-server.vercel.app/api/shop/cart/add",
       {
@@ -84,7 +87,7 @@ const shoppingCartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        console.log('Cart payload:', action.payload);
+        console.log("Cart payload:", action.payload);
         state.isLoading = false;
         state.cartItems = action.payload?.data || [];
       })

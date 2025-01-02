@@ -3,6 +3,7 @@ const Product = require("../../models/Product");
 
 const addToCart = async (req, res) => {
   try {
+    console.log('Received body:', req.body);
     const { userId, productId, quantity, sessionId } = req.body;
 
     if ((!userId && !sessionId) || !productId || quantity <= 0) {
