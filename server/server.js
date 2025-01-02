@@ -14,7 +14,7 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
-require('dotenv').config();
+require("dotenv").config();
 
 mongoose
   .connect(process.env.DB_URL)
@@ -24,9 +24,14 @@ mongoose
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const allowedOrigins =
+  process.env.NODE_ENV === "production"
+    ? ["https://www.scnroyal.com"]
+    : ["https://www.scnroyal.com", "http://localhost:5173"];
+
 app.use(
   cors({
-    origin: ["https://www.scnroyal.com", "http://localhost:5173"],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

@@ -5,15 +5,18 @@ function CheckAuth({ isAuthenticated, user, children }) {
 
   // console.log(location.pathname, isAuthenticated);
 
-  if (location.pathname === "/") {
-    if (!isAuthenticated) {
-      return <Navigate to="/auth/login" />;
+  if (
+    !isAuthenticated &&
+    location.pathname !== "/auth/login" &&
+    location.pathname !== "/auth/register"
+  ) {
+    if (location.pathname.includes("/checkout")) {
+      // Allow guest checkout
+      return <>{children}</>;
+    } else if (location.pathname.includes("/payment-success")) {
+      return <>{children}</>;
     } else {
-      if (user?.role === "admin") {
-        return <Navigate to="/admin/dashboard" />;
-      } else {
-        return <Navigate to="/shop/home" />;
-      }
+      return <Navigate to="/auth/login" />;
     }
   }
 

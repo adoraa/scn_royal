@@ -12,11 +12,16 @@ const initialState = {
 };
 
 function AuthLogin() {
-  const [formData, setFormData] = useState(initialState);
+  // const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  function onSubmit(event) {
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  const onSubmit = (event) => {
     event.preventDefault();
 
     dispatch(loginUser(formData)).then((data) => {

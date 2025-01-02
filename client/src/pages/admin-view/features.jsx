@@ -23,17 +23,32 @@ function AdminFeatures() {
     setImageLoadingState(true);
     const uploadedUrls = [];
 
-    for (let file of imageFiles) {
-      const data = new FormData();
-      data.append("my_file", file);
-      const response = await axios.post(
-        "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
-        data
-      );
+    try {
+      for (let file of imageFiles) {
+        const data = new FormData();
+        data.append("my_file", file);
+        const response = await axios.post(
+          "https://scn-royal-server.vercel.app/api/admin/products/upload-image",
+          data
+        );
 
-      if (response?.data?.success) {
-        uploadedUrls.push(response.data.result.url);
+        if (response?.data?.success) {
+          uploadedUrls.push(response.data.result.url);
+        } else {
+          toast({
+            title: "Image upload failed",
+            description: `Failed to upload ${file.name}. Please try again.`,
+            variant: "destructive",
+          });
+        }
       }
+    } catch (error) {
+      console.error("Error during image upload:", error); // Log any errors that occur during the upload
+      toast({
+        title: "Image upload error",
+        description: "An error occurred while uploading the images.",
+        variant: "destructive",
+      });
     }
 
     setUploadedImageUrls(uploadedUrls);
@@ -92,23 +107,23 @@ function AdminFeatures() {
       </Button>
       <div className="flex flex-col gap-4 mt-5">
         {sortedFeatureImages.map((featureImgItem) => (
-            <div className="relative" key={featureImgItem._id}>
-              <img
-                src={featureImgItem.image}
-                className="w-full h-[300px] object-cover rounded-t-lg"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-2 right-2 text-red-500 bg-red-200 hover:text-red-700"
-                onClick={() => handleDeleteImage(featureImgItem._id)}
-              >
-                {" "}
-                <Trash className="w-6 h-6" style={{ strokeWidth: 2.5 }} />{" "}
-                <span className="sr-only">Delete Image</span>
-              </Button>
-            </div>
-          ))}
+          <div className="relative" key={featureImgItem._id}>
+            <img
+              src={featureImgItem.image}
+              className="w-full h-[300px] object-cover rounded-t-lg"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 text-red-500 bg-red-200 hover:text-red-700"
+              onClick={() => handleDeleteImage(featureImgItem._id)}
+            >
+              {" "}
+              <Trash className="w-6 h-6" style={{ strokeWidth: 2.5 }} />{" "}
+              <span className="sr-only">Delete Image</span>
+            </Button>
+          </div>
+        ))}
       </div>
     </div>
   );
