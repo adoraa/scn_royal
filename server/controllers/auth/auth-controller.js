@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
-require('dotenv').config();
+require("dotenv").config();
 
 //register
 const registerUser = async (req, res) => {
@@ -108,21 +108,27 @@ const logoutUser = (req, res) => {
 //auth middleware
 const authMiddleware = async (req, res, next) => {
   const token = req.cookies.token;
-  if (!token)
+  const guestId = req.headers["guest-id"];
+  if (!token && !guestId)
     return res.status(401).json({
       success: false,
       message: "Unauthorised user!",
     });
-
-  try {
-    const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
-    req.user = decoded;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
+      req.user = decoded;
+      next();
+    } catch (error) {
+      res.status(401).json({
+        success: false,
+        message: "Unauthorised user!",
+      });
+    }
+  } else if (guestId) {
+    // If no token but guestId exists, treat it as a guest session
+    req.user = { guestId }; // Store the guestId in the request object
     next();
-  } catch (error) {
-    res.status(401).json({
-      success: false,
-      message: "Unauthorised user!",
-    });
   }
 };
 
