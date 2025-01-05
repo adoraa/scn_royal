@@ -20,8 +20,6 @@ async function imageUploadUtil(file) {
   // Force HTTPS URL before saving to MongoDB
   const secureUrl = result.url.replace("http://", "https://");
 
-  console.log(result);
-
   return { ...result, url: secureUrl };
 }
 

@@ -37,7 +37,7 @@ const addProduct = async (req, res) => {
       averageReview,
     } = req.body;
 
-    console.log(averageReview, "averageReview");
+    // console.log(averageReview, "averageReview");
 
     const newlyCreatedProduct = new Product({
       image,
@@ -151,7 +151,7 @@ const deleteProduct = async (req, res) => {
     // Delete the image from Cloudinary
     await cloudinary.uploader.destroy(publicId, (error, result) => {
       if (error) {
-        console.log("Cloudinary image deletion error:", error);
+        // console.log("Cloudinary image deletion error:", error);
         return res.status(500).json({
           success: false,
           message: "Error occurred while deleting image",

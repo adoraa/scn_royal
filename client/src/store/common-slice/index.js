@@ -32,7 +32,6 @@ export const addFeatureImage = createAsyncThunk(
 export const deleteFeatureImage = createAsyncThunk(
   "/order/deleteFeatureImage",
   async (id) => {
-    console.log("Deleting image with ID:", id);
     const response = await axios.delete(
       `https://scn-royal-server.vercel.app/api/common/feature/delete/${id}`
     );

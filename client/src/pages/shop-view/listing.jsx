@@ -29,7 +29,6 @@ function createSearchParamsHelper(filterParams) {
       queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
     }
   }
-  console.log(queryParams, "queryParams");
   return queryParams.join("&");
 }
 
@@ -75,12 +74,10 @@ function ShoppingListing() {
   }
 
   function handleGetProductDetails(getCurrentProductId) {
-    console.log(getCurrentProductId);
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    console.log(cartItems);
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -139,7 +136,6 @@ function ShoppingListing() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
-  console.log(productList, "productListproductListproductList");
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter} />
