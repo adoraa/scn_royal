@@ -15,6 +15,7 @@ import {
   TableCell,
   TableBody,
   TableHead,
+  TableHeader,
 } from "../../components/ui/table";
 
 // Mock data (replace with actual API calls)
@@ -113,12 +114,12 @@ function AdminDashboard() {
                 <CardHeader className="font-bold">Recent Orders</CardHeader>
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <Table>
-                    <TableHead>
+                    <TableHeader>
                       <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Amount</TableCell>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Amount</TableHead>
                       </TableRow>
-                    </TableHead>
+                    </TableHeader>
                     <TableBody>
                       {recentOrders.slice(0, 10).map((order) => (
                         <TableRow key={order.id}>

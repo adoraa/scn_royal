@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableBody, TableCell, TableHead, TableRow } from "../../components/ui/table";
+import { Table, TableHeader, TableBody, TableCell, TableHead, TableRow } from "../../components/ui/table";
 import { Button } from "../../components/ui/button";
 import { Card, CardHeader, CardContent } from "../../components/ui/card";
 import { Dialog, DialogTrigger, DialogContent } from "../../components/ui/dialog";
@@ -33,24 +33,24 @@ const ManageUsers = () => {
   return (
     <div className="p-6 space-y-6">
       <Card>
-        <CardHeader>Manage Users</CardHeader>
+        <CardHeader className="font-bold">Manage Users</CardHeader>
         <CardContent>
           <Table>
-            <TableHead>
+            <TableHeader>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Username</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableHead>ID</TableHead>
+                <TableHead>Username</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            </TableHead>
+            </TableHeader>
             <TableBody>
               {users.map((user) => (
                 <TableRow key={user.id} className="hover:bg-gray-50">
                   <TableCell>{user.id}</TableCell>
                   <TableCell>{user.username}</TableCell>
                   <TableCell>{user.role}</TableCell>
-                  <TableCell className="border p-2 flex space-x-2">
+                  <TableCell>
                     {/* Edit Button */}
                     <Dialog>
                       <DialogTrigger asChild>

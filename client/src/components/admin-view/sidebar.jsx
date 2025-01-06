@@ -44,7 +44,7 @@ const adminSidebarMenuItems = [
   },
   {
     id: "featuredImage",
-    label: "Featured Images",
+    label: "Store Banner",
     path: "/admin/featured-images",
     icon: <Images />,
   },
