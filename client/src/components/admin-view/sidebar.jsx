@@ -24,12 +24,12 @@ const adminSidebarMenuItems = [
     path: "/admin/products",
     icon: <ShoppingBasket />,
   },
-  {
-    id: "categories",
-    label: "Categories",
-    path: "/admin/categories",
-    icon: <LayoutGrid />,
-  },
+  // {
+  //   id: "categories",
+  //   label: "Categories",
+  //   path: "/admin/categories",
+  //   icon: <LayoutGrid />,
+  // },
   {
     id: "orders",
     label: "Orders",
