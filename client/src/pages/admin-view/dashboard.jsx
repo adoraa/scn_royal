@@ -48,71 +48,91 @@ function AdminDashboard() {
   const [recentOrders, setRecentOrders] = useState(mockOrders);
 
   return (
-    <div className="p-6">
-      {/* Stats Grid */}
-      <div className="grid-cols-1 gap-6 md:grid-cols-4">
-        {/* Total Revenue */}
-        <Card>
-          <CardHeader>Total Revenue</CardHeader>
-          <CardContent>${totalRevenue}</CardContent>
-        </Card>
-        {/* Total Sales */}
-        <Card>
-          <CardHeader>Total Sales</CardHeader>
-          <CardContent>{totalSales}</CardContent>
-        </Card>
-        {/* Total Products */}
-        <Card>
-          <CardHeader>Total Products</CardHeader>
-          <CardContent>{totalProducts}</CardContent>
-        </Card>
-        {/* Total Users */}
-        <Card>
-          <CardHeader>Total Users</CardHeader>
-          <CardContent>{totalUsers}</CardContent>
-        </Card>
-      </div>
+    <div className="flex flex-col min-h-screen">
+      <div className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {/* Total Revenue */}
+            <Card>
+              <CardHeader className="font-bold">Total Revenue</CardHeader>
+              <CardContent className="flex flex-col items-center justify-center">
+              <span className="font-semibold">${totalRevenue}</span>
+              </CardContent>
+            </Card>
+            {/* Total Sales */}
+            <Card>
+              <CardHeader className="font-bold">Total Sales</CardHeader>
+              <CardContent className="flex flex-col items-center justify-center">
+                <span className="font-semibold">+{totalSales}</span>
+              </CardContent>
+            </Card>
+            {/* Total Products */}
+            <Card>
+              <CardHeader className="font-bold">Total Products</CardHeader>
+              <CardContent className="flex flex-col items-center justify-center">
+              <span className="font-semibold">{totalProducts}</span>
+              </CardContent>
+            </Card>
+            {/* Total Users */}
+            <Card>
+              <CardHeader className="font-bold">Total Users</CardHeader>
+              <CardContent className="flex flex-col items-center justify-center">
+              <span className="font-semibold">{totalUsers}</span>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
-      {/* Revenue Chart and Recent Orders */}
-      <div className="grid-cols-1 gap-6 mt-6 md:grid-cols-2">
-        {/* Line Graph for Revenue */}
-        <Card>
-          <CardHeader>Revenue Over Time</CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={revenueData}>
-                <CartesianGrid stroke="#ccc" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <div className="py-12 bg-gray-50">
+          <div className="container mx-auto px-4">
+            {/* Revenue Chart and Recent Orders */}
+            <div className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2">
+              {/* Line Graph for Revenue */}
+              <Card>
+                <CardHeader className="font-bold">Transactions</CardHeader>
+                <CardContent className="flex flex-col items-center justify-center p-6 h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={revenueData}>
+                      <CartesianGrid stroke="#ccc" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Line
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="#8884d8"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-        {/* Recent Orders */}
-        <Card>
-          <CardHeader>Recent Orders</CardHeader>
-          <CardContent>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Amount</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {recentOrders.slice(0, 10).map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell>{order.id}</TableCell>
-                    <TableCell>+${order.amount}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+              {/* Recent Orders */}
+              <Card>
+                <CardHeader className="font-bold">Recent Orders</CardHeader>
+                <CardContent className="flex flex-col items-center justify-center p-6">
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Amount</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {recentOrders.slice(0, 10).map((order) => (
+                        <TableRow key={order.id}>
+                          <TableCell>{order.id}</TableCell>
+                          <TableCell>+${order.amount}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
