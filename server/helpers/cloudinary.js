@@ -1,6 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
-require('dotenv').config();
+require("dotenv").config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -18,9 +18,14 @@ async function imageUploadUtil(file) {
   });
 
   // Force HTTPS URL before saving to MongoDB
-  const secureUrl = result.url.replace("http://", "https://");
+  // const secureUrl = result.url.replace("http://", "https://");
 
-  return { ...result, url: secureUrl };
+  // return { ...result, url: secureUrl };
+
+  return {
+    secure_url: result.secure_url,
+    public_id: result.public_id,
+  };
 }
 
 const upload = multer({ storage });

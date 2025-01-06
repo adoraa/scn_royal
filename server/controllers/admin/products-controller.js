@@ -10,7 +10,12 @@ const handleImageUpload = async (req, res) => {
 
     res.json({
       success: true,
-      result,
+      result: {
+        // Image URL from Cloudinary
+        url: result.secure_url,
+        // Cloudinary public_id for deletion
+        publicId: result.public_id,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -22,7 +27,6 @@ const handleImageUpload = async (req, res) => {
 };
 
 //add a new product
-//add
 const addProduct = async (req, res) => {
   try {
     const {
@@ -37,10 +41,11 @@ const addProduct = async (req, res) => {
       averageReview,
     } = req.body;
 
-    // console.log(averageReview, "averageReview");
+    const uploadedImage = await imageUploadUtil(image);
 
     const newlyCreatedProduct = new Product({
-      image,
+      image: uploadedImage.secure_url, // Store the Cloudinary image URL
+      imagePublicId: uploadedImage.public_id, // Store the public_id for future deletions
       title,
       description,
       category,
@@ -105,6 +110,27 @@ const editProduct = async (req, res) => {
         message: "Product not found",
       });
 
+    // Only upload a new image if a new one is provided
+    let updatedImage = findProduct.image;
+    let updatedPublicId = findProduct.imagePublicId;
+
+    if (image && image !== findProduct.image) {
+      // A new image was uploaded,
+      // so delete the old one from cloudinary
+      if (findProduct.imagePublicId) {
+        await cloudinary.uploader.destroy(findProduct.imagePublicId);
+      }
+
+      //upload the new image
+      const result = await cloudinary.uploader.upload(image, {
+        // Adjust folder as necessary
+        folder: "products",
+      });
+      // Set the new image URL
+      updatedImage = result.secure_url;
+      updatedPublicId = result.public_id;
+    }
+
     findProduct.title = title || findProduct.title;
     findProduct.description = description || findProduct.description;
     findProduct.category = category || findProduct.category;
@@ -113,7 +139,8 @@ const editProduct = async (req, res) => {
     findProduct.salePrice =
       salePrice === "" ? 0 : salePrice || findProduct.salePrice;
     findProduct.totalStock = totalStock || findProduct.totalStock;
-    findProduct.image = image || findProduct.image;
+    findProduct.image = updatedImage;
+    findProduct.imagePublicId = updatedPublicId;
     findProduct.averageReview = averageReview || findProduct.averageReview;
 
     await findProduct.save();
