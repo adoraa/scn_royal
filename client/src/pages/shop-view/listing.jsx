@@ -20,6 +20,7 @@ import { sortOptions } from "@/config";
 import ProductFilter from "@/components/shop-view/filter";
 import ProductDetailsDialog from "@/components/shop-view/product-details";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import PaginationSection from "@/components/common/pagination";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -37,6 +38,21 @@ function ShoppingListing() {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
+
+  const totalProducts = productList.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+  // Get current products for the page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productList.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
@@ -95,7 +111,7 @@ function ShoppingListing() {
           return;
         }
       }
-    }
+    } 
 
     dispatch(
       addToCart({
@@ -136,6 +152,12 @@ function ShoppingListing() {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  }; 
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter} />
@@ -173,8 +195,8 @@ function ShoppingListing() {
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-          {productList && productList.length > 0
-            ? productList.map((productItem) => (
+          {currentProducts && currentProducts.length > 0
+            ? currentProducts.map((productItem) => (
                 <ShoppingProductTile
                   handleGetProductDetails={handleGetProductDetails}
                   product={productItem}
@@ -188,6 +210,11 @@ function ShoppingListing() {
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
+      />
+      <PaginationSection
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );
