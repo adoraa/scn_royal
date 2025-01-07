@@ -1,7 +1,7 @@
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useEffect, useRef } from "react";
-import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
+import { UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import axios from "axios";
@@ -82,7 +82,7 @@ function ProductImageUpload({
             {imageFiles.map((file, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <FileIcon className="w-8 text-primary mr-2 h-8" />
+                  <img className="w-8 mr-2 h-8" src={URL.createObjectURL(file)} alt={file.name} />
                 </div>
                 <p className="text-sm font-medium">{file.name}</p>
                 <Button
