@@ -17,12 +17,12 @@ function PaginationSection({ currentPage, totalPages, onPageChange }) {
         pageNumbers.push(i);
       }
     } else {
-      if (currentPage < 4) {
-        pageNumbers.push(1, 2, 3, "...", totalPages);
-      } else if (currentPage > 3 && currentPage < totalPages - 1) {
-        pageNumbers.push(1, "...", currentPage, currentPage + 1, totalPages);
+      if (currentPage < 3) {
+        pageNumbers.push(1, 2, "...", totalPages);
+      } else if (currentPage > 2 && currentPage < totalPages - 1) {
+        pageNumbers.push(1, "...", currentPage, "...", totalPages);
       } else {
-        pageNumbers.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
+        pageNumbers.push(1, "...", totalPages - 1, totalPages);
       }
     }
     return pageNumbers;
@@ -44,7 +44,7 @@ function PaginationSection({ currentPage, totalPages, onPageChange }) {
           <React.Fragment key={index}>
             {number === 1 ||
             number === totalPages ||
-            Math.abs(currentPage - number) <= 3 ? (
+            Math.abs(currentPage - number) <= 2 ? (
               <PaginationItem isCurrent={currentPage === number}>
                 {currentPage === number ? (
                   <PaginationLink
