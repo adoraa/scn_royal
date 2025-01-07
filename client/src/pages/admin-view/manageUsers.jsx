@@ -31,7 +31,7 @@ const ManageUsers = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6">
       <Card>
         <CardHeader className="font-bold">Manage Users</CardHeader>
         <CardContent>

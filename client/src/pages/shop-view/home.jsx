@@ -25,6 +25,7 @@ import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/hooks/use-toast";
 import ProductDetailsDialog from "@/components/shop-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
+import PaginationSection from "@/components/common/pagination";
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: IoMan },
@@ -44,10 +45,26 @@ const brandsWithIcon = [
 
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
+
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+
+  const totalProducts = productList.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+
   const { featureImageList } = useSelector((state) => state.commonFeature);
+
+  // Get current products for the page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productList.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
@@ -72,7 +89,7 @@ function ShoppingHome() {
   }
 
   function handleAddtoCart(getCurrentProductId) {
-    const guestId = 'guest';
+    const guestId = "guest";
     const currentUserId = user?.id || guestId;
     dispatch(
       addToCart({
@@ -89,6 +106,12 @@ function ShoppingHome() {
       }
     });
   }
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
@@ -181,7 +204,9 @@ function ShoppingHome() {
 
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8 font-primary">Product Category</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 font-primary">
+            Product Category
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {brandsWithIcon.map((brandItem) => (
               <Card
@@ -190,7 +215,9 @@ function ShoppingHome() {
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
-                  <span className="font-bold text-nowrap">{brandItem.label}</span>
+                  <span className="font-bold text-nowrap">
+                    {brandItem.label}
+                  </span>
                 </CardContent>
               </Card>
             ))}
@@ -204,8 +231,8 @@ function ShoppingHome() {
             Featured Products
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {productList && productList.length > 0
-              ? productList.map((productItem) => (
+            {currentProducts && currentProducts.length > 0
+              ? currentProducts.map((productItem) => (
                   <ShoppingProductTile
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
@@ -220,6 +247,12 @@ function ShoppingHome() {
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
+      />
+
+      <PaginationSection
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );
