@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDispatch, useSelector } from "react-redux";
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import AdminProductTile from "@/components/admin-view/product-tile";
+import PaginationSection from "@/components/common/pagination";
 
 const initialFormData = {
   image: null,
@@ -34,12 +35,28 @@ const initialFormData = {
 function AdminProducts() {
   const [openCreateProductsDialog, setOpenCreateProductsDialog] =
     useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
+
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const { productList } = useSelector((state) => state.adminProducts);
+
+  const totalProducts = productList.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+  // Get current products for the page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = productList.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
   const dispatch = useDispatch();
   const { toast } = useToast();
 
@@ -92,9 +109,20 @@ function AdminProducts() {
     });
   }
 
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   function isFormValid() {
     return Object.keys(formData)
-      .filter((currentKey) => currentKey !== "averageReview" && currentKey !== "salePrice" && currentKey !== "brand")
+      .filter(
+        (currentKey) =>
+          currentKey !== "averageReview" &&
+          currentKey !== "salePrice" &&
+          currentKey !== "brand"
+      )
       .map((key) => formData[key] !== "")
       .every((item) => item);
   }
@@ -111,8 +139,8 @@ function AdminProducts() {
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {productList && productList.length > 0
-          ? productList.map((productItem) => (
+        {currentProducts && currentProducts.length > 0
+          ? currentProducts.map((productItem) => (
               <AdminProductTile
                 setFormData={setFormData}
                 setOpenCreateProductsDialog={setOpenCreateProductsDialog}
@@ -158,6 +186,11 @@ function AdminProducts() {
           </div>
         </SheetContent>
       </Sheet>
+      <PaginationSection
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </Fragment>
   );
 }
