@@ -17,16 +17,12 @@ function PaginationSection({ currentPage, totalPages, onPageChange }) {
 
   return (
     <Pagination className="pb-4">
-      <PaginationPrevious asChild>
-        <Button
-          variant="ghost"
-          disabled={currentPage === 1}
-          onClick={() => onPageChange(currentPage - 1)}
-          className="cursor-pointer"
-        >
-          Previous
-        </Button>
-      </PaginationPrevious>
+      <PaginationPrevious
+        variant="ghost"
+        disabled={currentPage === 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        className="cursor-pointer"
+      ></PaginationPrevious>
 
       <PaginationContent>
         {pageNumbers.map((number) => (
@@ -47,19 +43,15 @@ function PaginationSection({ currentPage, totalPages, onPageChange }) {
           </PaginationItem>
         ))}
 
-        {totalPages > 5 && <PaginationEllipsis />}
+        {totalPages > 3 && <PaginationEllipsis />}
       </PaginationContent>
 
-      <PaginationNext asChild>
-        <Button
-          variant="ghost"
-          disabled={currentPage === totalPages}
-          onClick={() => onPageChange(currentPage + 1)}
-          className="cursor-pointer"
-        >
-          Next
-        </Button>
-      </PaginationNext>
+      <PaginationNext
+        variant="ghost"
+        disabled={currentPage === totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        className="cursor-pointer"
+      ></PaginationNext>
     </Pagination>
   );
 }
