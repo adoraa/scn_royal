@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { registerUser } from "@/store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
+import { ChevronLeft } from "lucide-react";
 
 const initialState = {
   username: "",
@@ -48,6 +49,16 @@ function AuthRegister() {
             to="/auth/login"
           >
             Login
+          </Link>{" "}
+        </p>
+        
+        <p className="mt-2 flex justify-center">
+          <Link
+            className="flex font-medium ml-2 hover:text-primary bg-gradient-to-r from-slate-800 via-lime-500 to-blue-700 bg-clip-text text-transparent"
+            to="/"
+          >
+            <ChevronLeft className="text-primary-Green hover:text-primary" />
+            <span className="font-primary font-bold">Shop</span>
           </Link>{" "}
         </p>
       </div>
