@@ -51,7 +51,7 @@ function AuthLogin() {
         </p>
         <p className="mt-2 flex justify-center">
           <Link
-            className="flex font-medium ml-2 hover:text-primary bg-gradient-to-r from-slate-800 via-lime-500 to-blue-700 bg-clip-text text-transparent"
+            className="flex font-medium ml-2 hover:text-primary text-gradient"
             to="/"
           >
             <ChevronLeft className="text-primary-Green hover:text-primary" />

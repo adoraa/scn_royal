@@ -7,9 +7,6 @@
 /* ... */
 
 @layer base {
-  * {
-      @apply font-secondary;
-  }
 
   :root {
 
@@ -125,9 +122,18 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border font-secondary;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .hover-gradient {
+    @apply hover:bg-gradient-to-r hover:from-slate-800 hover:via-lime-500 hover:to-blue-700 hover:bg-clip-text hover:text-transparent
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-slate-800 via-lime-500 to-blue-700 bg-clip-text text-transparent
+  }
+  .graident-theme {
+    @apply hover:bg-gradient-to-r hover:from-slate-800 hover:via-lime-500 hover:to-blue-700 hover:text-white
   }
 }
