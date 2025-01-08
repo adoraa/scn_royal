@@ -21,6 +21,7 @@ import ProductFilter from "@/components/shop-view/filter";
 import ProductDetailsDialog from "@/components/shop-view/product-details";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import PaginationSection from "@/components/common/pagination";
+import { handleAddToCart } from "@/utils/shop/cart";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -104,7 +105,7 @@ function ShoppingListing() {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
         if (getQuantity + 1 > getTotalStock) {
           toast({
-            title: `Only ${getQuantity} quantity can be added for this item`,
+            title: `Only ${getTotalStock} quantity can be added for this item`,
             variant: "destructive",
           });
 

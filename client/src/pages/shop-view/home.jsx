@@ -21,11 +21,11 @@ import {
 } from "@/store/shop/products-slice";
 import ShoppingProductTile from "@/components/shop-view/product-tile";
 import { useNavigate } from "react-router-dom";
-import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/hooks/use-toast";
 import ProductDetailsDialog from "@/components/shop-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 import PaginationSection from "@/components/common/pagination";
+import { handleAddToCart } from "@/utils/shop/cart";
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: IoMan },
@@ -69,6 +69,10 @@ function ShoppingHome() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
+  const guestId = "guest";
+  const currentUserId = user?.id || guestId;
+
+  const { cartItems } = useSelector((state) => state.shopCart);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -88,24 +92,11 @@ function ShoppingHome() {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  function handleAddtoCart(getCurrentProductId) {
-    const guestId = "guest";
-    const currentUserId = user?.id || guestId;
-    dispatch(
-      addToCart({
-        userId: currentUserId,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(currentUserId));
-        toast({
-          title: "Product added to cart",
-        });
-      }
-    });
-  }
+  const addToCartHandler = (productId, totalStock) => {
+    console.log("User Id Home", currentUserId);
+    
+    handleAddToCart(productId, totalStock, currentUserId, cartItems, productList, dispatch, toast);
+  };
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -236,7 +227,7 @@ function ShoppingHome() {
                   <ShoppingProductTile
                     handleGetProductDetails={handleGetProductDetails}
                     product={productItem}
-                    handleAddtoCart={handleAddtoCart}
+                    handleAddtoCart={() => addToCartHandler(productItem._id, productItem.stock)}
                   />
                 ))
               : null}
