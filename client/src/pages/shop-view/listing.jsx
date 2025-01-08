@@ -56,6 +56,8 @@ function ShoppingListing() {
 
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
+  const guestId = "guest";
+  const currentUserId = user?.id || guestId;
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -94,41 +96,9 @@ function ShoppingListing() {
     dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    let getCartItems = cartItems.items || [];
-
-    if (getCartItems.length) {
-      const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
-      );
-      if (indexOfCurrentItem > -1) {
-        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
-        if (getQuantity + 1 > getTotalStock) {
-          toast({
-            title: `Only ${getTotalStock} quantity can be added for this item`,
-            variant: "destructive",
-          });
-
-          return;
-        }
-      }
-    }
-
-    dispatch(
-      addToCart({
-        userId: user?.id,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
-        toast({
-          title: "Product added to cart",
-        });
-      }
-    });
-  }
+  const addToCartHandler = (productId, totalStock) => {
+    handleAddToCart(productId, totalStock, currentUserId, cartItems, productList, dispatch, toast);
+  };
 
   useEffect(() => {
     setSort("price-lowtohigh");
@@ -205,7 +175,7 @@ function ShoppingListing() {
                 <ShoppingProductTile
                   handleGetProductDetails={handleGetProductDetails}
                   product={productItem}
-                  handleAddtoCart={handleAddtoCart}
+                  handleAddtoCart={() => addToCartHandler(productItem._id, productItem.stock)}
                 />
               ))
             : null}

@@ -93,8 +93,6 @@ function ShoppingHome() {
   }
 
   const addToCartHandler = (productId, totalStock) => {
-    console.log("User Id Home", currentUserId);
-    
     handleAddToCart(productId, totalStock, currentUserId, cartItems, productList, dispatch, toast);
   };
 
