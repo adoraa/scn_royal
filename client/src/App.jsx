@@ -35,7 +35,8 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
 
-  if (isLoading) return <Skeleton className="w-[800] bg-primaryBlue h-[600px]" />;
+  if (isLoading)
+    return <Skeleton className="w-[800] bg-primaryBlue h-[600px]" />;
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -62,6 +63,9 @@ function App() {
         <Route path="/shop" element={<ShoppingLayout />}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
+          <Route path="search" element={<SearchProducts />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="payment-success" element={<PaymentSuccessPage />} />
           {/* Shop account inaccessible without authentication */}
           <Route
             path="account"
@@ -73,30 +77,7 @@ function App() {
               )
             }
           />
-          {/* Checkout inaccessible without authentication */}
-          <Route
-            path="checkout"
-            element={
-              isAuthenticated ? (
-                <ShoppingCheckout />
-              ) : (
-                <Navigate to="/auth/login" />
-              )
-            }
-          />
-          {/* Payment inaccessible without authentication */}
-          <Route
-            path="payment-success"
-            element={
-              isAuthenticated ? (
-                <PaymentSuccessPage />
-              ) : (
-                <Navigate to="/auth/login" />
-              )
-            }
-          />
           {/* <Route path="paypal-return" element={<PaypalReturnPage />} /> */}
-          <Route path="search" element={<SearchProducts />} />
         </Route>
 
         {/* Admin routes */}
@@ -113,7 +94,7 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="featured-images" element={<AdminFeatures />} />
           <Route path="categories" element={<AdminCategories />} />
-          <Route path="manage-users" element={<ManageUsers /> } />
+          <Route path="manage-users" element={<ManageUsers />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
