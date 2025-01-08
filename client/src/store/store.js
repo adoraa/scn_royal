@@ -1,4 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import authReducer from "./auth-slice";
 import adminProductsSlice from "./admin/products-slice";
 import adminOrderSlice from "./admin/order-slice";
@@ -10,9 +12,16 @@ import shopSearchSlice from "./shop/search-slice";
 import shopReviewSlice from "./shop/review-slice";
 import commonFeatureSlice from "./common-slice";
 
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+
 const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth: persistedAuthReducer,
 
     adminProducts: adminProductsSlice,
     adminOrder: adminOrderSlice,
@@ -28,4 +37,6 @@ const store = configureStore({
   },
 });
 
-export default store;
+const persistor = persistStore(store);
+
+export { store, persistor };

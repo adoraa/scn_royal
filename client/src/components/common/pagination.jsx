@@ -45,10 +45,10 @@ function PaginationSection({ currentPage, totalPages, onPageChange }) {
             {number === 1 ||
             number === totalPages ||
             Math.abs(currentPage - number) <= 2 ? (
-              <PaginationItem isCurrent={currentPage === number}>
+              <PaginationItem iscurrent={currentPage === number}>
                 {currentPage === number ? (
                   <PaginationLink
-                    isCurrent
+                    iscurrent
                     aria-current="page"
                     className="bg-primary-Green text-primary-Blue cursor-pointer"
                   >
