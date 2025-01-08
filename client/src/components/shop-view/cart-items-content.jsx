@@ -63,7 +63,7 @@ function UserCartItemsContent({ cartItem }) {
     ).then((data) => {
       if (data?.payload?.success) {
         toast({
-          title: "Cart item is deleted successfully",
+          title: "Cart item deleted successfully",
         });
       }
     });
