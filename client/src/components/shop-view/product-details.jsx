@@ -5,19 +5,22 @@ import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/hooks/use-toast";
 import { setProductDetails } from "@/store/shop/products-slice";
 import { Label } from "../ui/label";
 import StarRatingComponent from "../common/star-rating";
 import { useEffect, useState } from "react";
 import { addReview, getReviews } from "@/store/shop/review-slice";
+import { handleAddToCart } from "@/utils/shop/cart";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const guestId = localStorage.getItem("guestId") || generateGuestId();
+  const currentUserId = user?.id || guestId;
+  const { productList } = useSelector((state) => state.shopProducts);
   const { cartItems } = useSelector((state) => state.shopCart);
   const { reviews } = useSelector((state) => state.shopReview);
 
@@ -27,49 +30,24 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     setRating(getRating);
   }
 
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
-    const guestId = localStorage.getItem("guestId") || generateGuestId();
-    const currentUserId = user?.id || guestId;
-    let getCartItems = cartItems.items || [];
-
-    if (getCartItems.length) {
-      const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
-      );
-      if (indexOfCurrentItem > -1) {
-        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
-        if (getQuantity + 1 > getTotalStock) {
-          toast({
-            title: `Only ${getQuantity} quantity can be added for this item`,
-            variant: "destructive",
-          });
-
-          return;
-        }
-      }
-    }
-    dispatch(
-      addToCart({
-        userId: currentUserId,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(currentUserId));
-        toast({
-          title: "Product added to cart",
-        });
-      }
-    });
-  }
-
   // Function to generate a random guestId if not already set
   function generateGuestId() {
     const newGuestId = `guest_${Math.random().toString(36).substring(2, 15)}`;
     localStorage.setItem("guestId", newGuestId);
     return newGuestId;
   }
+
+  const addToCartHandler = (productId, totalStock) => {
+    handleAddToCart(
+      productId,
+      totalStock,
+      currentUserId,
+      cartItems,
+      productList,
+      dispatch,
+      toast
+    );
+  };
 
   function handleDialogClose() {
     setOpen(false);
@@ -161,7 +139,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               <Button
                 className="w-full"
                 onClick={() =>
-                  handleAddToCart(
+                  addToCartHandler(
                     productDetails?._id,
                     productDetails?.totalStock
                   )

@@ -69,7 +69,7 @@ function ShoppingHome() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
-  const guestId = "guest";
+  const guestId = localStorage.getItem("guestId") || generateGuestId();
   const currentUserId = user?.id || guestId;
 
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -77,6 +77,13 @@ function ShoppingHome() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Function to generate a random guestId if not already set
+  function generateGuestId() {
+    const newGuestId = `guest_${Math.random().toString(36).substring(2, 15)}`;
+    localStorage.setItem("guestId", newGuestId);
+    return newGuestId;
+  }
 
   function handleNavigateToListingPage(getCurrentItem, section) {
     sessionStorage.removeItem("filters");
