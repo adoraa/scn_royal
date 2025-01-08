@@ -3,58 +3,53 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartItem, updateCartQuantity } from "@/store/shop/cart-slice";
 import { useToast } from "@/hooks/use-toast";
+import { handleAddToCart } from "@/utils/shop/cart";
 
 function UserCartItemsContent({ cartItem }) {
   const { user } = useSelector((state) => state.auth);
+  const guestId = localStorage.getItem("guestId") || generateGuestId();
+  const currentUserId = user?.id || guestId;
   const { cartItems } = useSelector((state) => state.shopCart);
   const { productList } = useSelector((state) => state.shopProducts);
   const dispatch = useDispatch();
   const { toast } = useToast();
 
+  // Function to generate a random guestId if not already set
+  function generateGuestId() {
+    const newGuestId = `guest_${Math.random().toString(36).substring(2, 15)}`;
+    localStorage.setItem("guestId", newGuestId);
+    return newGuestId;
+  }
+
   function handleUpdateQuantity(getCartItem, typeOfAction) {
     if (typeOfAction == "plus") {
-      let getCartItems = cartItems.items || [];
-
-      if (getCartItems.length) {
-        const indexOfCurrentCartItem = getCartItems.findIndex(
-          (item) => item.productId === getCartItem?.productId
-        );
-
-        const getCurrentProductIndex = productList.findIndex(
-          (product) => product._id === getCartItem?.productId
-        );
-        const getTotalStock = productList[getCurrentProductIndex].totalStock;
-
-        if (indexOfCurrentCartItem > -1) {
-          const getQuantity = getCartItems[indexOfCurrentCartItem].quantity;
-          if (getQuantity + 1 > getTotalStock) {
-            toast({
-              title: `Only ${getTotalStock} quantity can be added for this item`,
-              variant: "destructive",
-            });
-
-            return;
-          }
+      handleAddToCart(
+        getCartItem?.productId,
+        productList[getCartItem.productId]?.totalStock, // getTotalStock
+        user?.id, // currentUserId
+        cartItems, // cartItems
+        productList, // productList
+        dispatch, // dispatch
+        toast // toast
+      );
+    } else {
+      dispatch(
+        updateCartQuantity({
+          userId: user?.id,
+          productId: getCartItem?.productId,
+          quantity:
+            typeOfAction === "plus"
+              ? getCartItem?.quantity + 1
+              : getCartItem?.quantity - 1,
+        })
+      ).then((data) => {
+        if (data?.payload?.success) {
+          toast({
+            title: "Cart item updated successfully",
+          });
         }
-      }
+      });
     }
-
-    dispatch(
-      updateCartQuantity({
-        userId: user?.id,
-        productId: getCartItem?.productId,
-        quantity:
-          typeOfAction === "plus"
-            ? getCartItem?.quantity + 1
-            : getCartItem?.quantity - 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        toast({
-          title: "Cart item updated successfully",
-        });
-      }
-    });
   }
 
   function handleCartItemDelete(getCartItem) {
