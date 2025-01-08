@@ -125,7 +125,7 @@ function HeaderRightContent() {
         <DropdownMenuContent side="right" className="w-56">
           {user ? (
             <>
-              <DropdownMenuLabel>Logged in a {user.username}</DropdownMenuLabel>
+              <DropdownMenuLabel>Logged in as {user.username}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/shop/account")}>
                 <UserCog className="mr-2 h-4 w-4" />
