@@ -11,6 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import PaginationSection from "@/components/common/pagination";
+import { handleAddToCart } from "@/utils/shop/cart";
 
 function SearchProducts() {
   const [keyword, setKeyword] = useState("");
@@ -20,7 +22,23 @@ function SearchProducts() {
   const { searchResults } = useSelector((state) => state.shopSearch);
   const { productDetails } = useSelector((state) => state.shopProducts);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
+
+  const totalProducts = searchResults.length;
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
+
+  // Get current products for the page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = searchResults.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
   const { user } = useSelector((state) => state.auth);
+  const guestId = "guest";
+  const currentUserId = user?.id || guestId;
 
   const { cartItems } = useSelector((state) => state.shopCart);
   const { toast } = useToast();
@@ -36,41 +54,9 @@ function SearchProducts() {
     }
   }, [keyword]);
 
-  function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    let getCartItems = cartItems.items || [];
-
-    if (getCartItems.length) {
-      const indexOfCurrentItem = getCartItems.findIndex(
-        (item) => item.productId === getCurrentProductId
-      );
-      if (indexOfCurrentItem > -1) {
-        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
-        if (getQuantity + 1 > getTotalStock) {
-          toast({
-            title: `Only ${getQuantity} quantity can be added for this item`,
-            variant: "destructive",
-          });
-
-          return;
-        }
-      }
-    }
-
-    dispatch(
-      addToCart({
-        userId: user?.id,
-        productId: getCurrentProductId,
-        quantity: 1,
-      })
-    ).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
-        toast({
-          title: "Product added to cart",
-        });
-      }
-    });
-  }
+  const addToCartHandler = (productId, totalStock) => {
+    handleAddToCart(productId, totalStock, currentUserId, cartItems, searchResults, dispatch, toast);
+  };
 
   function handleGetProductDetails(getCurrentProductId) {
     dispatch(fetchProductDetails(getCurrentProductId));
@@ -79,6 +65,12 @@ function SearchProducts() {
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="container mx-auto md:px-6 px-4 py-8">
@@ -93,13 +85,13 @@ function SearchProducts() {
           />
         </div>
       </div>
-      {!searchResults.length ? (
+      {!currentProducts.length ? (
         <h1 className="text-5xl font-extrabold font-primary">No result found!</h1>
       ) : null}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-        {searchResults.map((item) => (
+        {currentProducts.map((item) => (
           <ShoppingProductTile
-            handleAddtoCart={handleAddtoCart}
+            handleAddtoCart={() => addToCartHandler(item._id, item.stock)}
             product={item}
             handleGetProductDetails={handleGetProductDetails}
           />
@@ -109,6 +101,11 @@ function SearchProducts() {
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
+      />
+      <PaginationSection
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );

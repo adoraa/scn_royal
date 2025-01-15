@@ -19,7 +19,6 @@ import { useToast } from "@/hooks/use-toast";
 import { sortOptions } from "@/config";
 import ProductFilter from "@/components/shop-view/filter";
 import ProductDetailsDialog from "@/components/shop-view/product-details";
-import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import PaginationSection from "@/components/common/pagination";
 import { handleAddToCart } from "@/utils/shop/cart";
 
