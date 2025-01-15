@@ -15,7 +15,7 @@ function StarRatingComponent({ rating, handleRatingChange }) {
       onClick={handleRatingChange ? () => handleRatingChange(star) : null}
     >
       <StarIcon
-        className={`w-6 h-6 ${
+        className={`w-2 h-2 md:w-6 md:h-6 ${
           star <= rating ? "fill-yellow-500" : "fill-black"
         }`}
       />
