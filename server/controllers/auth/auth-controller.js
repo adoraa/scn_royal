@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
-require('dotenv').config();
+require("dotenv").config();
 
 //register
 const registerUser = async (req, res) => {
@@ -72,9 +72,9 @@ const loginUser = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "Strict",
-        maxAge: 60 * 60 * 1000,
+        secure: process.env.NODE_ENV === "production", // secure only production
+        sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax", // lax for development
+        maxAge: 60 * 60 * 1000, // 1 hour
       })
       .json({
         success: true,
