@@ -63,6 +63,10 @@ export const checkAuth = createAsyncThunk(
       "https://scn-royal-server.vercel.app/api/auth/check-auth",
       {
         withCredentials: true,
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
       }
     );
 
